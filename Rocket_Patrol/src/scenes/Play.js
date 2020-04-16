@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         // load images/tile sprites
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('spaceshipR', './assets/spaceship_reversed.png');
         this.load.image('starfield', './assets/starfield.png');
 
         // load spritesheet
@@ -14,6 +15,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         
@@ -30,10 +32,27 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
 
         // add spaceships
-        this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'spaceship', 0, 20).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width, 260, 'spaceship', 0, 10).setOrigin(0,0);
-
+        let random1 = Phaser.Math.Between(1, 2);
+        let random2 = Phaser.Math.Between(1, 2);
+        let random3 = Phaser.Math.Between(1, 2);
+        if(random1 == 1) {
+            this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30, 'left').setOrigin(0,0);
+        }
+        else if(random1 == 2){
+            this.ship01 = new Spaceship(this, game.config.width - 96, 132, 'spaceshipR', 0, 30, 'right').setOrigin(0,0);
+        }
+        if(random2 == 1) {
+            this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'spaceship', 0, 20, 'left').setOrigin(0,0);
+        }
+        else if(random2 == 2) {
+            this.ship02 = new Spaceship(this, game.config.width - 192, 196, 'spaceshipR', 0, 20, 'right').setOrigin(0,0);
+        }
+        if(random3 == 1) {
+            this.ship03 = new Spaceship(this, game.config.width, 260, 'spaceship', 0, 10, 'left').setOrigin(0,0);
+        }
+        else if(random3 == 2) {
+            this.ship03 = new Spaceship(this, game.config.width - 292, 260, 'spaceshipR', 0, 10, 'right').setOrigin(0,0);
+        }
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -72,6 +91,11 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or <- for menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
+        }, null, this);
+
+        // speedup after 30 sec
+        this.speedUpTimer = this.time.delayedCall(30000, () => {
+            game.settings.spaceshipSpeed *= 2;
         }, null, this);
     }
 
