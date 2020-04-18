@@ -33,6 +33,9 @@ class Play extends Phaser.Scene {
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
 
+        // add shine offscreen
+        this.shine = new Shine(this, 1000, 1000, 'shine').setOrigin(0, 0);
+
         // add spaceships
         let random1 = Phaser.Math.Between(1, 2);
         let random2 = Phaser.Math.Between(1, 2);
