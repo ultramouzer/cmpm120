@@ -9,6 +9,15 @@ class Rocket extends Phaser.GameObjects.Sprite {
         this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
     }
 
+    //getters
+    getX(){
+        return this.x;
+    }
+
+    getY(){
+        return this.y;
+    }
+
     update() {
         // left/right movement
         if(!this.isFiring) {
@@ -26,19 +35,16 @@ class Rocket extends Phaser.GameObjects.Sprite {
             this.sfxRocket.play();  // play sfx
         }
         // move rocket left button
-        if(keyLEFT.isDown && this.isFiring) {
+        if(keyLEFT.isDown && this.isFiring && this.x >= 47) {
             this.x -= 1;
         }
         // move rocket right button
-        if(keyRIGHT.isDown && this.isFiring) {
+        if(keyRIGHT.isDown && this.isFiring && this.x <= 578) {
             this.x += 1;
         }
         // if fired, move up
-        if(this.isFiring && this.y >= 108 && !keyD.isDown) {
+        if(this.isFiring && this.y >= 108) {
             this.y -= 2;
-        }
-        else if(this.isFiring && this.y >= 108 && keyD.isDown) {// shine slowdown
-            this.y -= 0.5;
         }
         // reset on miss
         if(this.y <= 108) {

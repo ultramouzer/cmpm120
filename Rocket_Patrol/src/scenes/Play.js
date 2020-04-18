@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
 
         // add shine offscreen
-        this.shine = new Shine(this, 1000, 1000, 'shine').setOrigin(0, 0);
+        this.shine = new Shine(this, 1000, 1000, 'shine', this.p1Rocket).setOrigin(0, 0);
 
         // add spaceships
         let random1 = Phaser.Math.Between(1, 2);
@@ -120,6 +120,7 @@ class Play extends Phaser.Scene {
 
         this.starfield.tilePositionX -= 4;
         this.p1Rocket.update();
+        this.shine.update();
 
         if (!this.gameOver) {               
             this.p1Rocket.update();         // update rocket sprite
@@ -141,6 +142,17 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+
+        //check shine collisions
+        if(this.checkShineCollision(this.shine, this.ship03)) {
+            this.shipExplode(this.ship03);   
+        }
+        if (this.checkShineCollision(this.shine, this.ship02)) {
+            this.shipExplode(this.ship02);
+        }
+        if (this.checkShineCollision(this.shine, this.ship01)) {
+            this.shipExplode(this.ship01);
+        }
     }
 
     checkCollision(rocket, ship) {
@@ -155,11 +167,26 @@ class Play extends Phaser.Scene {
         }
     }
 
+    checkShineCollision(shine, ship) {
+        // simple AABB checking
+        if (shine.x < ship.x + ship.width && 
+            shine.x + shine.width > ship.x && 
+            shine.y < ship.y + ship.height &&
+            shine.height + shine.y > ship. y) {
+                return true;
+        } else {
+            return false;
+        }
+    }
+
     shipExplode(ship) {
         ship.alpha = 0;                         // temporarily hide ship
+
         // create explosion sprite at ship's position
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');             // play explode animation
+        //remove ship from screen for a bit
+        ship.x = 2000;
         boom.on('animationcomplete', () => {    // callback after animation completes
             ship.reset();                       // reset ship position
             ship.alpha = 1;                     // make ship visible again
