@@ -1,8 +1,8 @@
 let config = { 
     type:   Phaser.AUTO,
-    width:  690,
+    width:  1600,
     height: 900,
-    scene:  [Menu, Play],
+    scene:  [/*Menu,*/Play],
 }
 
 let game = new Phaser.Game(config);
@@ -14,4 +14,4 @@ game.settings = {
 }
 
 // reserve keyboard vars
-let keyUP, keyDOWN, keyLEFT, keyRIGHT;
+let keyUp, keyDown, keyLeft, keyRight, keySpace;
