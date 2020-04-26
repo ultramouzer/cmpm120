@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         this.ground.setImmovable();
 
         //create rock
-        this.rock = new Rock(this, game.config.width, 880, 'rock', 0, 30).setOrigin(0, 0);
+        this.rock = new Rock(this, game.config.width, 700, 'rock', 0, 30).setOrigin(0, 0);
         
         //create collision
         this.physics.add.collider(this.player, this.ground);
@@ -43,5 +43,6 @@ class Play extends Phaser.Scene {
     update() {
         this.background.tilePositionX += 12;
         this.player.update();
+        this.rock.update();
     }
 }
