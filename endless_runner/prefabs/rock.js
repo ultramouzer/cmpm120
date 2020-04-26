@@ -1,4 +1,4 @@
-class Rock extends Phaser.Physics.Arcade.Sprite{
+class Obstacle extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame, lifespanValue){
         super(scene, x, y, texture, frame);
 
@@ -8,8 +8,8 @@ class Rock extends Phaser.Physics.Arcade.Sprite{
     }
 
     update(){
-        if(this.x >= 0){
-            this.x -= 1;
+        if(this.x >= -400){
+            this.setVelocityX(-1500);
         } else {
             this.x = game.config.width;
         }

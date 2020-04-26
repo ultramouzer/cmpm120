@@ -7,13 +7,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        //movement
-        if(keyLeft.isDown && this.x > 0){
-            this.x -= 10;
+        //boundries
+        this.x = 300;
+        if(!keyLeft.isDown && !keyRight.isDown){
+            this.setVelocityX(0);
         }
-        if(keyRight.isDown && this.x < game.config.width - 200){
-            this.x += 10;
-        }
+
+        //actions
         if(Phaser.Input.Keyboard.JustDown(keyUp) && this.body.touching.down){
             this.airborn = true;
             //code for jump
@@ -25,8 +25,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //this.airborn = false;
             this.setVelocityY(2500);
         }
-        if(this.body.touching.down) {
 
+        if(this.body.touching.right){
+            console.log("rock");
+            //code for hitting a rock
         }
     }
 }
