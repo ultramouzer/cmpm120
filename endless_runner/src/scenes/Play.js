@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         //no assets yet
-        this.load.image('lion', './assets/lion.png');
+        this.load.image('lion', './assets/lion_run_scaled.png');
         this.load.image('grass', './assets/grass.jpg')
         this.load.image('background', './assets/background.jpg')
     }
@@ -22,7 +22,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Player(this, game.config.width/2 - 8, 0, 'lion').setOrigin(0, 0);
+        this.player = new Player(this, 69, 69, 'lion').setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
         
@@ -36,7 +36,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        this.background.tilePositionX += 4;
+        this.background.tilePositionX += 12;
         this.player.update();
     }
 }
