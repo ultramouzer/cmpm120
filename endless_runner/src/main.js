@@ -3,6 +3,10 @@ let config = {
     width:  1600,
     height: 900,
     scene:  [/*Menu,*/Play],
+    physics:{
+        default:'arcade',
+        arcade:{debug:true}
+    }
 }
 
 let game = new Phaser.Game(config);
