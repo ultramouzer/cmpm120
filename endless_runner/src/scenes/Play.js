@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('lion', './assets/lion.png');
         this.load.image('grass', './assets/grass.jpg')
         this.load.image('background', './assets/background.jpg')
+        this.load.image('rock', './assets/rock.jpg')
     }
 
     create() {
@@ -30,9 +31,13 @@ class Play extends Phaser.Scene {
         this.ground = this.physics.add.sprite(0, 900, 'grass').setOrigin(0, 0);
         this.ground.displayWidth=this.sys.game.config.width;
         this.ground.setImmovable();
+
+        //create rock
+        this.rock = new Rock(this, game.config.width, 880, 'rock', 0, 30).setOrigin(0, 0);
         
         //create collision
         this.physics.add.collider(this.player, this.ground);
+        this.physics.add.collider(this.player, this.rock);
     }
 
     update() {
