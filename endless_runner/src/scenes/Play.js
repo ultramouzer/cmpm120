@@ -51,7 +51,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bird);
 
         //check for overlap
-        this.physics.add.overlap(this.player, this.rock, checkCollision, null, this);
+        this.physics.add.overlap(this.player, this.rock, this.checkCollision, null, this);
     }
 
     update() {
