@@ -9,9 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         //boundries
         this.x = 300;
-        if(!keyLeft.isDown && !keyRight.isDown){
-            this.setVelocityX(0);
-        }
+        this.setVelocityX(0);
 
         //actions
         if(Phaser.Input.Keyboard.JustDown(keyUp) && this.body.touching.down){
@@ -26,9 +24,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(2500);
         }
 
+        //collision
         if(this.body.touching.right){
             console.log("rock");
-            //code for hitting a rock
+            //code for hitting thing
+        }
+        if(this.body.touching.up){
+            console.log("bird");
+            //code for hitting thing
         }
     }
 }

@@ -10,6 +10,8 @@ class Play extends Phaser.Scene {
         this.load.image('background', './assets/background.jpg');
         this.load.image('rock', './assets/rock_scaled.png');
         this.load.image('is_it_the_dawn_brigade', './assets/just_a_bird.png');
+        this.load.image('claw', './assets/claw.png');
+        this.load.image('zebra', './assets/zebra_scaled.png');
     }
 
     create() {
@@ -39,11 +41,16 @@ class Play extends Phaser.Scene {
         this.rock.setImmovable();
         
         //is it the dawn brigade?
-        this.bird = new Obstacle(this, game.config.width + 990, 400, 'is_it_the_dawn_brigade', 0, 30).setOrigin(0, 0);
+        this.bird = new Obstacle(this, game.config.width + 990, 300, 'is_it_the_dawn_brigade', 0, 30).setOrigin(0, 0);
         //no, it was just a bird
         this.physics.world.enable(this.bird);
         this.bird.setImmovable();
         
+        //create attack
+        this.claw = new Attack(this, 400, 1690, 'claw').setOrigin(0, 0);
+
+        //create food
+        this.zebra = new Food(this, 400, 690, 'zebra').setOrigin(0, 0);
 
         //create collision
         this.physics.add.collider(this.player, this.ground);
@@ -56,5 +63,24 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.rock.update();
         this.bird.update();
+        this.claw.update();
+        this.zebra.update();
+
+        if(this.checkFoodCollision(this.claw, this.zebra)){
+            console.log("zebra got hit");
+            this.zebra.reset();
+        }
+    }
+
+    checkFoodCollision(claw, food) {
+        // simple AABB checking
+        if (claw.x < food.x + food.width && 
+            claw.x + claw.width > food.x && 
+            claw.y < food.y + food.height &&
+            claw.height + claw.y > food. y) {
+                return true;
+        } else {
+            return false;
+        }
     }
 }
