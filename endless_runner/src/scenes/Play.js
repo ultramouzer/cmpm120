@@ -85,14 +85,14 @@ class Play extends Phaser.Scene {
     }
 
     checkCollision(player, object) {
-        if(object == this.rock){
+        if(object == this.rock && this.player.body.touching.right){
             console.log("The lion has collided with a rock!");
             player.life = player.life - 30;
-        } else if (object == this.bird){
+            console.log(player.life);
+        } else if (object == this.bird && this.player.body.touching.right){
             console.log("The lion has collided with a bird!");
             player.life = player.life - 20;
+            console.log(player.life);
         }
-
-        console.log(player.life);
     }
 }

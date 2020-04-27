@@ -5,7 +5,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this); // add to existing, displayList, updateList
 
         this.life = lifespan;
-
     }
 
     update() {
