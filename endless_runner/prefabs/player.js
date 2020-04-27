@@ -27,10 +27,5 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //this.airborn = false;
             this.setVelocityY(2500);
         }
-
-        if(this.body.touching.right){
-            console.log("rock");
-            //code for hitting a rock
-        }
     }
 }

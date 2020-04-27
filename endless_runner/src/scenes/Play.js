@@ -24,7 +24,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Player(this, 300, 69, 'lion', 100).setOrigin(0, 0);
+        this.player = new Player(this, 300, 69, 'lion', 0, 1000).setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
         
@@ -47,11 +47,8 @@ class Play extends Phaser.Scene {
 
         //create collision
         this.physics.add.collider(this.player, this.ground);
-        this.physics.add.collider(this.player, this.rock);
-        this.physics.add.collider(this.player, this.bird);
-
-        //check for overlap
-        this.physics.add.overlap(this.player, this.rock, this.checkCollision, null, this);
+        this.physics.add.collider(this.player, this.rock, this.checkCollision, null, this);
+        this.physics.add.collider(this.player, this.bird, this.checkCollision, null, this);
     }
 
     update() {
@@ -64,12 +61,12 @@ class Play extends Phaser.Scene {
     checkCollision(player, object) {
         if(object == this.rock){
             console.log("The lion has collided with a rock!");
-            player.lifespan = player.lifespan - 20;
-            console.log(player.lifespan);
+            player.life = player.life - 30;
         } else if (object == this.bird){
             console.log("The lion has collided with a bird!");
-            player.lifespan = player.lifespan - 30;
-            console.log(player.lifespan);
+            player.life = player.life - 20;
         }
+
+        console.log(player.life);
     }
 }
