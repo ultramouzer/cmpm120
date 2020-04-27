@@ -1,8 +1,10 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame) {
+    constructor(scene, x, y, texture, frame, lifespan) {
         super(scene, x, y, texture, frame);
 
         scene.add.existing(this); // add to existing, displayList, updateList
+
+        this.life = lifespan;
 
     }
 
@@ -25,13 +27,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //collision
-        if(this.body.touching.right){
+        /*if(this.body.touching.right){
             console.log("rock");
             //code for hitting thing
         }
         if(this.body.touching.up){
             console.log("bird");
             //code for hitting thing
-        }
+        }*/
     }
 }
