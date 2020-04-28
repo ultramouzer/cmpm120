@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Player(this, 300, 69, 'lion', 0, 1000).setOrigin(0, 0);
+        this.player = new Player(this, 300, 69, 'lion', 0, 1000, 100).setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
         
@@ -40,9 +40,8 @@ class Play extends Phaser.Scene {
         this.physics.world.enable(this.rock);
         this.rock.setImmovable();
         
-        //is it the dawn brigade?
-        this.bird = new Obstacle(this, game.config.width + 990, 300, 'is_it_the_dawn_brigade', 0, 30).setOrigin(0, 0);
-        //no, it was just a bird
+        //create bird
+        this.bird = new Obstacle(this, game.config.width + 990, 300, 'bird', 0, 30).setOrigin(0, 0);
         this.physics.world.enable(this.bird);
         this.bird.setImmovable();
         
@@ -50,12 +49,42 @@ class Play extends Phaser.Scene {
         this.claw = new Attack(this, 400, 1690, 'claw').setOrigin(0, 0);
 
         //create food
-        this.zebra = new Food(this, 400, 690, 'zebra').setOrigin(0, 0);
+        this.zebra = new Food(this, 400, 690, 'zebra', 0 , 30).setOrigin(0, 0);
 
         //create collision
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.player, this.rock, this.checkCollision, null, this);
         this.physics.add.collider(this.player, this.bird, this.checkCollision, null, this);
+
+        //create lifespan stats
+        let lifeConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'left',
+            padding: {
+                top: 10,
+                bottom: 10,
+            },
+            fixedWidth: 500
+        }
+        this.lifeText = this.add.text(100, 100, this.player.life, lifeConfig);
+
+        //create hunger stats
+        let hungerConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#CC0000',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 10,
+                bottom: 10,
+            },
+            fixedWidth: 500
+        }
+        this.hungerText = this.add.text(1000, 100, this.player.hunger, hungerConfig);
     }
 
     update() {
@@ -87,12 +116,12 @@ class Play extends Phaser.Scene {
     checkCollision(player, object) {
         if(object == this.rock && this.player.body.touching.right){
             console.log("The lion has collided with a rock!");
-            player.life = player.life - 30;
-            console.log(player.life);
+            this.player.life -= 30;
+            this.lifeText.text = this.player.life;
         } else if (object == this.bird && this.player.body.touching.right){
             console.log("The lion has collided with a bird!");
-            player.life = player.life - 20;
-            console.log(player.life);
+            this.player.life -= 20;
+            this.lifeText.text = this.player.life;
         }
     }
 }
