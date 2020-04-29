@@ -12,6 +12,8 @@ class Play extends Phaser.Scene {
         this.load.image('is_it_the_dawn_brigade', './assets/just_a_bird.png');
         this.load.image('claw', './assets/claw.png');
         this.load.image('zebra', './assets/zebra_scaled.png');
+        this.load.image('mate', './assets/lion_good.png');
+        this.load.image('uglyBastard', './assets/lion_bad.png');
     }
 
     create() {
@@ -36,17 +38,27 @@ class Play extends Phaser.Scene {
         this.ground.setImmovable();
 
         //create rock
-        this.rock = new Obstacle(this, game.config.width, 690, 'rock', 0, 30).setOrigin(0, 0);
+        this.rock = new Obstacle(this, game.config.width, 690, 'rock', 0, 30, "rock").setOrigin(0, 0);
         this.physics.world.enable(this.rock);
         this.rock.setImmovable();
         
         //create bird
-        this.bird = new Obstacle(this, game.config.width + 990, 300, 'bird', 0, 30).setOrigin(0, 0);
+        this.bird = new Obstacle(this, game.config.width + 990, 300, 'is_it_the_dawn_brigade', 0, 30, "bird").setOrigin(0, 0);
         this.physics.world.enable(this.bird);
         this.bird.setImmovable();
-        
+
+        //create mate
+        this.mate = new Fucker(this, game.config.width + (420*2), 690, 'mate', 0, 'good').setOrigin(0, 0);
+        this.physics.world.enable(this.mate);
+        this.mate.setImmovable();
+
+        //create ugly bastard
+        this.uglyBastard = new Fucker(this, game.config.width + 1300, 690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);
+        this.physics.world.enable(this.uglyBastard);
+        this.uglyBastard.setImmovable();
+
         //create attack
-        this.claw = new Attack(this, 400, 1690, 'claw').setOrigin(0, 0);
+        this.claw = new Attack(this, 400, 1690, 'claw', this.player).setOrigin(0, 0);
 
         //create food
         this.zebra = new Food(this, 400, 690, 'zebra', 0 , 30).setOrigin(0, 0);
@@ -55,6 +67,8 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.player, this.rock, this.checkCollision, null, this);
         this.physics.add.collider(this.player, this.bird, this.checkCollision, null, this);
+        this.physics.add.collider(this.player, this.mate, this.checkCollision, null, this);
+        this.physics.add.collider(this.player, this.uglyBastard, this.checkCollision, null, this);
 
         //create lifespan stats
         let lifeConfig = {
@@ -94,19 +108,25 @@ class Play extends Phaser.Scene {
         this.bird.update();
         this.claw.update();
         this.zebra.update();
+        this.mate.update();
+        this.uglyBastard.update();
 
-        if(this.checkFoodCollision(this.claw, this.zebra)){
+        if(this.checkClawCollision(this.claw, this.zebra)){
             console.log("zebra got hit");
             this.zebra.reset();
         }
+        if(this.checkClawCollision(this.claw, this.uglyBastard)){
+            console.log("no ntr allowed");
+            this.uglyBastard.reset();
+        }
     }
 
-    checkFoodCollision(claw, food) {
+    checkClawCollision(claw, object) {
         // simple AABB checking
-        if (claw.x < food.x + food.width && 
-            claw.x + claw.width > food.x && 
-            claw.y < food.y + food.height &&
-            claw.height + claw.y > food. y) {
+        if (claw.x < object.x + object.width && 
+            claw.x + claw.width > object.x && 
+            claw.y < object.y + object.height &&
+            claw.height + claw.y > object. y) {
                 return true;
         } else {
             return false;
@@ -114,14 +134,31 @@ class Play extends Phaser.Scene {
     }
 
     checkCollision(player, object) {
-        if(object == this.rock && this.player.body.touching.right){
-            console.log("The lion has collided with a rock!");
-            this.player.life -= 30;
-            this.lifeText.text = this.player.life;
-        } else if (object == this.bird && this.player.body.touching.right){
-            console.log("The lion has collided with a bird!");
-            this.player.life -= 20;
-            this.lifeText.text = this.player.life;
+        switch(object.type) {
+            case "rock":
+                if(player.body.touching.right){
+                    console.log("The lion has collided with a rock!");
+                    this.player.life -= 30;
+                    this.lifeText.text = this.player.life;
+                }
+                break;
+            case "bird":
+                if(player.body.touching.right){
+                    console.log("The lion has collided with a bird!");
+                    this.player.life -= 20;
+                    this.lifeText.text = player.life;
+                }
+                break;
+            case "good":
+                //code for fucking
+                console.log("baby making time");
+                break;
+            case "ntr":
+                if(player.body.touching.right){
+                    //kill the kids and get ntred
+                    console.log("you got ntred");
+                }
+                break;
         }
     }
 }

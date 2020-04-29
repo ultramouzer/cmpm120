@@ -1,10 +1,10 @@
 class Obstacle extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, texture, frame, lifespanValue){
+    constructor(scene, x, y, texture, frame, lifespanValue, type){
         super(scene, x, y, texture, frame);
 
         scene.add.existing(this);
-
         this.lValue = lifespanValue;
+        this.type = type;
     }
 
     update(){

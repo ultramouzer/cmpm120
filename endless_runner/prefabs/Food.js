@@ -3,7 +3,6 @@ class Food extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
 
         scene.add.existing(this); // add to existing, displayList, updateList
-
         this.food = foodValue;
     }
 
