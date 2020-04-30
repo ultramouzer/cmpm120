@@ -11,6 +11,10 @@ class Attack extends Phaser.GameObjects.Sprite {
             this.x = 600;
             this.y = this.player.getY();
         }
+        else if (keyDown.isDown) {
+            this.x = 500;
+            this.y = this.player.getY() + 100;
+        }
         else {
             this.y = 1690;
         }

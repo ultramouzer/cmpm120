@@ -14,6 +14,8 @@ class Play extends Phaser.Scene {
         this.load.image('zebra', './assets/zebra_scaled.png');
         this.load.image('mate', './assets/lion_good.png');
         this.load.image('uglyBastard', './assets/lion_bad.png');
+        this.load.image('dad', './assets/lion_mate.png');
+        this.load.image('kid', './assets/lion_cub_scaled.png');
     }
 
     create() {
@@ -53,7 +55,7 @@ class Play extends Phaser.Scene {
         this.mate.setImmovable();
 
         //create ugly bastard
-        this.uglyBastard = new Fucker(this, game.config.width + 1300, 690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);
+        this.uglyBastard = new Fucker(this, game.config.width + 1300, 1690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);//690 height when on screen
         this.physics.world.enable(this.uglyBastard);
         this.uglyBastard.setImmovable();
 
@@ -61,7 +63,11 @@ class Play extends Phaser.Scene {
         this.claw = new Attack(this, 400, 1690, 'claw', this.player).setOrigin(0, 0);
 
         //create food
-        this.zebra = new Food(this, 400, 690, 'zebra', 0 , 30).setOrigin(0, 0);
+        this.zebra = new Food(this, 400, 660, 'zebra', 0 , 30).setOrigin(0, 0);
+
+        //create dad and kid
+        this.dad = this.add.sprite( 100, 1700, 'dad').setOrigin(0, 0);//100, 700 while on screen
+        this.kid = this.add.sprite( 100, 1790, 'kid').setOrigin(0, 0);//100, 790 while on screen
 
         //create collision
         this.physics.add.collider(this.player, this.ground);
@@ -150,13 +156,23 @@ class Play extends Phaser.Scene {
                 }
                 break;
             case "good":
-                //code for fucking
+                //code for fucking, play animation
                 console.log("baby making time");
+
+                //dad and kids show up on screen
+                this.dad.y = 700;
+                this.kid.y = 790;
+                //old mate goes off screen
+                this.mate.y = 1690;
+                //ugly bastard comes on screen
+                this.uglyBastard.y = 690;
+                this.uglyBastard.x = game.config.width;
                 break;
             case "ntr":
                 if(player.body.touching.right){
                     //kill the kids and get ntred
                     console.log("you got ntred");
+                    this.uglyBastard.reset();
                 }
                 break;
         }

@@ -1,15 +1,24 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame, lifespan, hunger, kids) {
+    constructor(scene, x, y, texture, frame, lifespan, hunger) {
         super(scene, x, y, texture, frame);
 
         scene.add.existing(this); // add to existing, displayList, updateList
 
         this.life = lifespan;
         this.hunger = hunger;
+        this.hasKids = false;
     }
 
     getY(){
         return this.y;
+    }
+
+    pregnant(){
+        this.hasKids == true;
+    }
+
+    isMother(){
+        return this.hasKids;
     }
 
     update() {
