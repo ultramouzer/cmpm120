@@ -37,7 +37,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Player(this, 300, 69, 'lion', 0, 1000, 100).setOrigin(0, 0);
+        this.player = new Player(this, 300, 69, 'lion', 0, 500, 100).setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
         
@@ -127,11 +127,10 @@ class Play extends Phaser.Scene {
             this.uglyBastard.reset();
         }
 
-        if(this.player.life >= 0){
+        if(this.player.life < this.player.maxLife && this.player.life >= 0){
             this.healthBar.setScale(this.player.life / this.player.maxLife, 1);
-            this.healthBar.x = 350;
-        } else {
-            this.healthBar.width = 0;
+            this.healthBar.setPosition(350 - ((this.player.maxLife - this.player.life) / 2), 100);
+            console.log(this.healthBar.x);
         }
 
     }
