@@ -1,6 +1,6 @@
 class Play extends Phaser.Scene {
     constructor() {
-        super("playScene");//playScene is a Scene
+        super("playScene"); //playScene is a Scene
     }
 
     preload() {
@@ -33,29 +33,30 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, 300, 69, 'lion', 0, 1000, 100).setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
-        
+        this.player.setBounce(0);
+
         //create ground
         this.ground = this.physics.add.sprite(0, 900, 'grass').setOrigin(0, 0);
-        this.ground.displayWidth=this.sys.game.config.width;
+        this.ground.displayWidth = this.sys.game.config.width;
         this.ground.setImmovable();
 
         //create rock
         this.rock = new Obstacle(this, game.config.width + 500, 690, 'rock', 0, 30, "rock").setOrigin(0, 0);
         this.physics.world.enable(this.rock);
         this.rock.setImmovable();
-        
+
         //create bird
         this.bird = new Obstacle(this, game.config.width + 2000, 300, 'is_it_the_dawn_brigade', 0, 30, "bird").setOrigin(0, 0);
         this.physics.world.enable(this.bird);
         this.bird.setImmovable();
 
         //create mate
-        this.mate = new Fucker(this, game.config.width + (420*69), 690, 'mate', 0, 'good').setOrigin(0, 0);
+        this.mate = new Fucker(this, game.config.width + (420 * 69), 690, 'mate', 0, 'good').setOrigin(0, 0);
         this.physics.world.enable(this.mate);
         this.mate.setImmovable();
 
         //create ugly bastard
-        this.uglyBastard = new Fucker(this, game.config.width + 177031, 1690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);//690 height when on screen
+        this.uglyBastard = new Fucker(this, game.config.width + 177031, 1690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0); //690 height when on screen
         this.physics.world.enable(this.uglyBastard);
         this.uglyBastard.setImmovable();
 
@@ -63,11 +64,11 @@ class Play extends Phaser.Scene {
         this.claw = new Attack(this, 400, 1690, 'claw', this.player).setOrigin(0, 0);
 
         //create food
-        this.zebra = new Food(this, 400, 660, 'zebra', 0 , 30).setOrigin(0, 0);
+        this.zebra = new Food(this, 400, 660, 'zebra', 0, 30).setOrigin(0, 0);
 
         //create dad and kid
-        this.dad = this.add.sprite( 100, 1700, 'dad').setOrigin(0, 0);//100, 700 while on screen
-        this.kid = this.add.sprite( 100, 1790, 'kid').setOrigin(0, 0);//100, 790 while on screen
+        this.dad = this.add.sprite(100, 1700, 'dad').setOrigin(0, 0); //100, 700 while on screen
+        this.kid = this.add.sprite(100, 1790, 'kid').setOrigin(0, 0); //100, 790 while on screen
 
         //create collision
         this.physics.add.collider(this.player, this.ground);
@@ -117,16 +118,16 @@ class Play extends Phaser.Scene {
         this.mate.update();
         this.uglyBastard.update();
 
-        if(this.checkClawCollision(this.claw, this.zebra)){
+        if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
             this.player.feed(30);
             this.zebra.reset();
         }
-        if(this.checkClawCollision(this.claw, this.uglyBastard)){
+        if (this.checkClawCollision(this.claw, this.uglyBastard)) {
             console.log("no ntr allowed");
             this.uglyBastard.reset();
         }
-        if(this.checkClawCollision(this.claw, this.bird)){
+        if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
             this.player.feed(10);
             this.bird.reset();
@@ -135,52 +136,62 @@ class Play extends Phaser.Scene {
 
     checkClawCollision(claw, object) {
         // simple AABB checking
-        if (claw.x < object.x + object.width && 
-            claw.x + claw.width > object.x && 
+        if (claw.x < object.x + object.width &&
+            claw.x + claw.width > object.x &&
             claw.y < object.y + object.height &&
-            claw.height + claw.y > object. y) {
-                return true;
+            claw.height + claw.y > object.y) {
+            return true;
         } else {
             return false;
         }
     }
 
     checkCollision(player, object) {
-        switch(object.type) {
-            case "rock":
-                if(player.body.touching.right){
-                    console.log("The lion has collided with a rock!");
-                    this.player.life -= 30;
-                    this.lifeText.text = this.player.life;
-                }
-                break;
-            case "bird":
-                if(player.body.touching.right){
-                    console.log("The lion has collided with a bird!");
-                    this.player.life -= 20;
-                    this.lifeText.text = player.life;
-                }
-                break;
-            case "good":
-                //code for fucking, play animation
-                console.log("baby making time");
+        if (!player.isInvincible()) {
+            switch (object.type) {
+                case "rock":
+                    if (player.body.touching.right) {
+                        console.log("The lion has collided with a rock!");
+                        this.player.life -= 30;
+                        this.lifeText.text = this.player.life;
+                        player.beInvincible();
+                        this.time.delayedCall(100, () => {
+                            player.dontBeInvincible();
+                        }, null, this);
+                    }
+                    break;
+                case "bird":
+                    if (player.body.touching.right || player.body.touching.up) {
+                        console.log("The lion has collided with a bird!");
+                        this.player.life -= 20;
+                        this.lifeText.text = player.life;
+                        player.beInvincible();
+                        this.time.delayedCall(100, () => {
+                            player.dontBeInvincible();
+                        }, null, this);
+                    }
+                    break;
+                case "good":
+                    //code for fucking, play animation
+                    console.log("baby making time");
 
-                //dad and kids show up on screen
-                this.dad.y = 700;
-                this.kid.y = 790;
-                //old mate goes off screen
-                this.mate.y = 1690;
-                //ugly bastard comes on screen
-                this.uglyBastard.y = 690;
-                this.uglyBastard.x = game.config.width + (420*30);
-                break;
-            case "ntr":
-                if(player.body.touching.right){
-                    //kill the kids and get ntred
-                    console.log("you got ntred");
-                    this.uglyBastard.reset();
-                }
-                break;
+                    //dad and kids show up on screen
+                    this.dad.y = 700;
+                    this.kid.y = 790;
+                    //old mate goes off screen
+                    this.mate.y = 1690;
+                    //ugly bastard comes on screen
+                    this.uglyBastard.y = 690;
+                    this.uglyBastard.x = game.config.width + (420 * 30);
+                    break;
+                case "ntr":
+                    if (player.body.touching.right) {
+                        //kill the kids and get ntred
+                        console.log("you got ntred");
+                        this.uglyBastard.reset();
+                    }
+                    break;
+            }
         }
     }
 }

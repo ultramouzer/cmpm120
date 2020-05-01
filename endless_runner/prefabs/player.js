@@ -7,6 +7,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.life = lifespan;
         this.hunger = hunger;
         this.hasKids = false;
+        this.invincible = false;
+    }
+
+    isInvincible(){
+        return this.invincible;
+    }
+
+    beInvincible(){
+        this.invincible = true;
+    }
+
+    dontBeInvincible(){
+        this.invincible = false;
     }
 
     getY(){
@@ -42,6 +55,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //this.airborn = false;
             this.setVelocityY(2500);
         }
+
+        //decrease lifespan
+        this.life--;
+        //decrease hunger
+        this.hunger--;
 
         //collision
         /*if(this.body.touching.right){
