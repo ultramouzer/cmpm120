@@ -40,12 +40,12 @@ class Play extends Phaser.Scene {
         this.ground.setImmovable();
 
         //create rock
-        this.rock = new Obstacle(this, game.config.width, 690, 'rock', 0, 30, "rock").setOrigin(0, 0);
+        this.rock = new Obstacle(this, game.config.width + 500, 690, 'rock', 0, 30, "rock").setOrigin(0, 0);
         this.physics.world.enable(this.rock);
         this.rock.setImmovable();
         
         //create bird
-        this.bird = new Obstacle(this, game.config.width + 990, 300, 'is_it_the_dawn_brigade', 0, 30, "bird").setOrigin(0, 0);
+        this.bird = new Obstacle(this, game.config.width + 2000, 300, 'is_it_the_dawn_brigade', 0, 30, "bird").setOrigin(0, 0);
         this.physics.world.enable(this.bird);
         this.bird.setImmovable();
 
@@ -119,11 +119,17 @@ class Play extends Phaser.Scene {
 
         if(this.checkClawCollision(this.claw, this.zebra)){
             console.log("zebra got hit");
+            this.player.feed(30);
             this.zebra.reset();
         }
         if(this.checkClawCollision(this.claw, this.uglyBastard)){
             console.log("no ntr allowed");
             this.uglyBastard.reset();
+        }
+        if(this.checkClawCollision(this.claw, this.bird)){
+            console.log("bird got hit");
+            this.player.feed(10);
+            this.bird.reset();
         }
     }
 

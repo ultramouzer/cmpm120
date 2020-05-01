@@ -11,7 +11,11 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite{
         if(this.x >= -400){
             this.setVelocityX(-1500);
         } else {
-            this.x = game.config.width;
+            this.reset();
         }
+    }
+
+    reset(){
+        this.x = game.config.width + Math.floor(Math.random() * 1500);
     }
 }

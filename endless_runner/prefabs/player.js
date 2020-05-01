@@ -21,6 +21,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         return this.hasKids;
     }
 
+    feed(value){
+        this.hunger += value;
+    }
+
     update() {
         //boundries
         this.x = 300;
