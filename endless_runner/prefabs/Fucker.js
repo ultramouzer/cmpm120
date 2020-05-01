@@ -26,6 +26,6 @@ class Fucker extends Phaser.Physics.Arcade.Sprite{
 
     reset(){
         //code for death and respawning
-        this.x = game.config.width;
+        this.x = game.config.width + (420*20) + Math.floor(Math.random() * (420 * 10));
     }
 }

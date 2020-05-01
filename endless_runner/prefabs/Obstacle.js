@@ -5,17 +5,23 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         this.lValue = lifespanValue;
         this.type = type;
+        this.speed = -1500;
     }
 
     update(){
         if(this.x >= -400){
-            this.setVelocityX(-1500);
+            this.setVelocityX(this.speed);
         } else {
             this.reset();
         }
     }
 
+    chooseRandomSpeed(){
+        this.speed = -2000 + Math.floor(Math.random() * 1000)
+    }
+
     reset(){
         this.x = game.config.width + Math.floor(Math.random() * 1500);
+        this.chooseRandomSpeed();
     }
 }

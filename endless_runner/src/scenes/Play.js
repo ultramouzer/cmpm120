@@ -50,12 +50,12 @@ class Play extends Phaser.Scene {
         this.bird.setImmovable();
 
         //create mate
-        this.mate = new Fucker(this, game.config.width + (420*2), 690, 'mate', 0, 'good').setOrigin(0, 0);
+        this.mate = new Fucker(this, game.config.width + (420*69), 690, 'mate', 0, 'good').setOrigin(0, 0);
         this.physics.world.enable(this.mate);
         this.mate.setImmovable();
 
         //create ugly bastard
-        this.uglyBastard = new Fucker(this, game.config.width + 1300, 1690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);//690 height when on screen
+        this.uglyBastard = new Fucker(this, game.config.width + 177031, 1690, 'uglyBastard', 0, 'ntr').setOrigin(0, 0);//690 height when on screen
         this.physics.world.enable(this.uglyBastard);
         this.uglyBastard.setImmovable();
 
@@ -172,7 +172,7 @@ class Play extends Phaser.Scene {
                 this.mate.y = 1690;
                 //ugly bastard comes on screen
                 this.uglyBastard.y = 690;
-                this.uglyBastard.x = game.config.width;
+                this.uglyBastard.x = game.config.width + (420*30);
                 break;
             case "ntr":
                 if(player.body.touching.right){
