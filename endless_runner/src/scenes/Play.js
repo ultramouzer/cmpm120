@@ -3,6 +3,8 @@ class Play extends Phaser.Scene {
         super("playScene");//playScene is a Scene
     }
 
+    "use strict"; 
+    
     preload() {
         //no assets yet
         this.load.image('lion', './assets/lion_run_scaled.png');
@@ -16,6 +18,11 @@ class Play extends Phaser.Scene {
         this.load.image('uglyBastard', './assets/lion_bad.png');
         this.load.image('dad', './assets/lion_mate.png');
         this.load.image('kid', './assets/lion_cub_scaled.png');
+
+        this.load.image('healthBar', './assets/Health Bar.png');
+        this.load.image('hungerBar', './assets/Hunger Bar.png');
+        this.load.image('emptyBar', './assets/Empty Bar.png');
+
     }
 
     create() {
@@ -76,35 +83,29 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.mate, this.checkCollision, null, this);
         this.physics.add.collider(this.player, this.uglyBastard, this.checkCollision, null, this);
 
+        //create lifebar
+        this.emptyBar = this.add.sprite(350, 100, 'emptyBar').setOrigin(0.5);
+        this.healthBar = this.add.sprite(350, 100, 'healthBar').setOrigin(0.5);
+
+        //create hunger bar
+
         //create lifespan stats
-        let lifeConfig = {
+        var lifeTextConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#FFFFFF',
             align: 'left',
-            padding: {
-                top: 10,
-                bottom: 10,
-            },
-            fixedWidth: 500
         }
-        this.lifeText = this.add.text(100, 100, this.player.life, lifeConfig);
+        this.lifeText = this.add.text(110, 90, this.player.life, lifeTextConfig);
 
         //create hunger stats
-        let hungerConfig = {
+        var hungerConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#CC0000',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 10,
-                bottom: 10,
-            },
-            fixedWidth: 500
+            color: '#FFFFFF',
+            align: 'left',
         }
-        this.hungerText = this.add.text(1000, 100, this.player.hunger, hungerConfig);
+        this.hungerText = this.add.text(1050, 90, this.player.hunger, hungerConfig);
     }
 
     update() {
@@ -125,6 +126,14 @@ class Play extends Phaser.Scene {
             console.log("no ntr allowed");
             this.uglyBastard.reset();
         }
+
+        if(this.player.life >= 0){
+            this.healthBar.setScale(this.player.life / this.player.maxLife, 1);
+            this.healthBar.x = 350;
+        } else {
+            this.healthBar.width = 0;
+        }
+
     }
 
     checkClawCollision(claw, object) {
