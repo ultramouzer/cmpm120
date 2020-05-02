@@ -15,6 +15,6 @@ class Food extends Phaser.GameObjects.Sprite {
     }
 
     reset(){
-        this.x = game.config.width;
+        this.x = game.config.width + 2000 + Math.floor(Math.random() * 1000);
     }
 }

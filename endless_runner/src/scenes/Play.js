@@ -58,7 +58,7 @@ class Play extends Phaser.Scene {
         this.bird.setImmovable();
 
         //create mate
-        this.mate = new Fucker(this, game.config.width + (420 * 69), 690, 'mate', 0, 'good').setOrigin(0, 0);
+        this.mate = new Fucker(this, game.config.width + (420 * 30), 690, 'mate', 0, 'good').setOrigin(0, 0);
         this.physics.world.enable(this.mate);
         this.mate.setImmovable();
 
@@ -71,7 +71,7 @@ class Play extends Phaser.Scene {
         this.claw = new Attack(this, 400, 1690, 'claw', this.player).setOrigin(0, 0);
 
         //create food
-        this.zebra = new Food(this, 400, 660, 'zebra', 0, 30).setOrigin(0, 0);
+        this.zebra = new Food(this, game.config.width + 3000, 660, 'zebra', 0, 30).setOrigin(0, 0);
 
         //create dad and kid
         this.dad = this.add.sprite(100, 1700, 'dad').setOrigin(0, 0); //100, 700 while on screen
@@ -123,7 +123,7 @@ class Play extends Phaser.Scene {
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
-            this.player.feed(30);
+            this.player.feed(20);
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.zebra.reset();
         }
@@ -134,7 +134,7 @@ class Play extends Phaser.Scene {
         
         if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
-            this.player.feed(10);
+            this.player.feed(5);
             this.bird.reset();
         }
 
@@ -223,8 +223,8 @@ class Play extends Phaser.Scene {
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
                     
-                    this.time.delayedCall(60000, () => {this.newGeneration();}, null, this);
-                    //60 seconds delay
+                    this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
+                    //25 seconds until maturity
                     break;
                 case "ntr":
                     if (player.body.touching.right) {
