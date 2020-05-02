@@ -94,21 +94,39 @@ class Play extends Phaser.Scene {
 
         //create lifespan bar and stats
         var lifeTextConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            color: '#FFFFFF',
-            align: 'left',
+            title: {
+                fontFamily: 'Courier',
+                fontSize: '36px',
+                color: '#FFFFFF',
+                align: 'left',
+            },
+            text: {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                color: '#FFFFFF',
+                align: 'left',
+            }
         }
-        this.lifeText = this.add.text(110, 90, this.player.life, lifeTextConfig);
+        this.lifeTitle = this.add.text(100, 40, "Health", lifeTextConfig.title);
+        this.lifeText = this.add.text(110, 90, this.player.life, lifeTextConfig.text);
 
         //create hunger stats
-        var hungerConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            color: '#FFFFFF',
-            align: 'left',
+        var hungerTextConfig = {
+            title: {
+                fontFamily: 'Courier',
+                fontSize: '36px',
+                color: '#FFFFFF',
+                align: 'left',
+            },
+            text: {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                color: '#FFFFFF',
+                align: 'left',
+            }
         }
-        this.hungerText = this.add.text(1390, 90, this.player.hunger, hungerConfig);
+        this.hungerTitle = this.add.text(1320, 40, "Hunger", hungerTextConfig.title);
+        this.hungerText = this.add.text(1390, 90, this.player.hunger, hungerTextConfig.text);
     }
 
     update() {
@@ -119,12 +137,22 @@ class Play extends Phaser.Scene {
         this.claw.update();
         this.zebra.update();
         this.mate.update();
-        this.uglyBastard.update();
+        this.uglyBastard.update()
+
+        //hungerBar updates based on food
+        this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, -0.05);
+
+        //healthBar updates based on playtime + collision
+        //if player is above 3/4ths hunger, they regenerate health
+        if(this.player.hunger >= (this.player.maxHunger * 3/4) && this.player.life < this.player.maxLife){
+            console.log("Regenerating health");
+            this.healthBarUpdate(this.player, this.healthBar, this.lifeText, 0.5);
+        }
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
-            this.player.feed(30);
-            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
+            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 30);
+            console.log(this.player.hunger);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
@@ -134,37 +162,28 @@ class Play extends Phaser.Scene {
         
         if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
-            this.player.feed(10);
+            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 20);
             this.bird.reset();
         }
-
-        /*//healthBar updates based on playtime + collision
-        if(this.player.life < this.player.maxLife && this.player.life >= 0){
-            this.healthBar.setScale(this.player.life / this.player.maxLife, 1);
-            this.healthBar.setPosition(350 - ((this.player.maxLife - this.player.life) / 2), 100);
-        }*/
-
-        /*//hungerBar updates based on food
-        if(this.player.hunger < this.player.maxHunger && this.player.hunger >= 0){
-            this.hungerText.text = this.player.hunger;
-            this.hungerBar.setScale(this.player.hunger / this.player.maxHunger, 1);
-            this.hungerBar.setPosition(1200 + ((this.player.maxHunger - this.player.hunger) * 2.5), 100);
-        }*/
-
-        this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
-        this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
     }
 
-    healthBarUpdate(player, bar, barText){
-        if(player.life < player.maxLife && player.life >= 0){
-            barText.text = player.life;
+    healthBarUpdate(player, bar, barText, number){
+        if(player.life <= player.maxLife && player.life >= 0){
+            player.life = player.life + number;
+            barText.text = Math.round(player.life);
             bar.setScale(player.life / player.maxLife, 1);
             bar.setPosition(350 - ((player.maxLife - player.life) / 2), 100);
-        }
+        } 
     }
 
-    hungerBarUpdate(player, bar, barText){
-        if(player.hunger < player.maxHunger && player.hunger >= 0){
+    hungerBarUpdate(player, bar, barText, number){
+        player.hunger = player.hunger + number;
+
+        if(player.hunger > player.maxHunger){
+            player.hunger = player.maxHunger;
+        }
+
+        if(player.hunger >= 0){
             barText.text = Math.round(player.hunger);
             bar.setScale(player.hunger / player.maxHunger, 1);
             bar.setPosition(1200 + ((player.maxHunger - player.hunger) * 2.5), 100);
@@ -189,25 +208,23 @@ class Play extends Phaser.Scene {
                 case "rock":
                     if (player.body.touching.right) {
                         console.log("The lion has collided with a rock!");
-                        this.player.life -= 30;
-                        this.lifeText.text = this.player.life;
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
+                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -30);
+                        /*player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);
+                        }, null, this);*/
                     }
                     break;
                 case "bird":
                     if (player.body.touching.right || player.body.touching.up) {
                         console.log("The lion has collided with a bird!");
-                        this.player.life -= 20;
-                        this.lifeText.text = player.life;
-                        //necessary to prevent multi-collision bug
-                        player.beInvincible();
+                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -20);
+                        /*player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);
+                        }, null, this);*/
                     }
                     break;
                 case "good":
