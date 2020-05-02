@@ -37,7 +37,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     feed(value){
-        this.hunger += value;
+        if(value + this.hunger >= this.maxHunger){
+            this.hunger = this.maxHunger;
+        }
+        else {
+            this.hunger += value;
+        }
     }
 
     update() {
@@ -62,15 +67,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //this.life -= 0.1;
         //decrease hunger
         this.hunger -= 0.01;
-
-        //collision
-        /*if(this.body.touching.right){
-            console.log("rock");
-            //code for hitting thing
-        }
-        if(this.body.touching.up){
-            console.log("bird");
-            //code for hitting thing
-        }*/
+        console.log(this.hunger);
     }
 }

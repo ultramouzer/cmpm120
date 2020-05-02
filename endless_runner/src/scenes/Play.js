@@ -191,10 +191,11 @@ class Play extends Phaser.Scene {
                         console.log("The lion has collided with a rock!");
                         this.player.life -= 30;
                         this.lifeText.text = this.player.life;
-                        /*player.beInvincible();
+                        //necessary to prevent multi-collision bug
+                        player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);*/
+                        }, null, this);
                     }
                     break;
                 case "bird":
@@ -202,10 +203,11 @@ class Play extends Phaser.Scene {
                         console.log("The lion has collided with a bird!");
                         this.player.life -= 20;
                         this.lifeText.text = player.life;
-                        /*player.beInvincible();
+                        //necessary to prevent multi-collision bug
+                        player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);*/
+                        }, null, this);
                     }
                     break;
                 case "good":
