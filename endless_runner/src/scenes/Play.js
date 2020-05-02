@@ -140,18 +140,19 @@ class Play extends Phaser.Scene {
         this.uglyBastard.update()
 
         //hungerBar updates based on food
-        this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, -0.05);
+        this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
 
         //healthBar updates based on playtime + collision
         //if player is above 3/4ths hunger, they regenerate health
         if(this.player.hunger >= (this.player.maxHunger * 3/4) && this.player.life < this.player.maxLife){
             console.log("Regenerating health");
-            this.healthBarUpdate(this.player, this.healthBar, this.lifeText, 0.5);
+            this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
         }
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
-            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 30);
+            this.player.feed(20);
+            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
@@ -161,7 +162,8 @@ class Play extends Phaser.Scene {
         
         if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
-            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 5);
+            this.player.feed(5);
+            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.bird.reset();
         }
 
@@ -182,23 +184,16 @@ class Play extends Phaser.Scene {
         this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
     }
 
-    healthBarUpdate(player, bar, barText, number){
+    healthBarUpdate(player, bar, barText){
         if(player.life <= player.maxLife && player.life >= 0){
-            player.life = player.life + number;
             barText.text = Math.round(player.life);
             bar.setScale(player.life / player.maxLife, 1);
             bar.setPosition(350 - ((player.maxLife - player.life) / 2), 100);
         } 
     }
 
-    hungerBarUpdate(player, bar, barText, number){
-        player.hunger = player.hunger + number;
-
-        if(player.hunger > player.maxHunger){
-            player.hunger = player.maxHunger;
-        }
-
-        if(player.hunger >= 0){
+    hungerBarUpdate(player, bar, barText){
+        if(player.hunger <= player.maxHunger && player.hunger >= 0){
             barText.text = Math.round(player.hunger);
             bar.setScale(player.hunger / player.maxHunger, 1);
             bar.setPosition(1200 + ((player.maxHunger - player.hunger) * 2.5), 100);
