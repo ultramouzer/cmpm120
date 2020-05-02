@@ -222,6 +222,9 @@ class Play extends Phaser.Scene {
                     //ugly bastard comes on screen
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
+                    
+                    this.time.delayedCall(10000, () => {this.newGeneration();}, null, this);
+                    //10 seconds delay
                     break;
                 case "ntr":
                     if (player.body.touching.right) {
@@ -232,5 +235,26 @@ class Play extends Phaser.Scene {
                     break;
             }
         }
+    }
+
+    newGeneration(){
+        //player cutscene
+
+        //max out hugner and lifespan
+        this.player.reset();
+        //move kid and dad offscreen
+        this.kid.y = 1790;
+        this.dad.y = 1700;
+        //reset mate
+        this.mate.x = game.config.width + (420 * 69);
+        this.mate.y = 690;
+        //reset obstacles
+        this.rock.reset();
+        this.bird.reset();
+        //reset zebra
+        this.zebra.reset();
+        //move ntr lion offscreen
+        this.uglyBastard.y = 1690;
+        this.uglyBastard.x = game.config.width + (420 * 30);
     }
 }

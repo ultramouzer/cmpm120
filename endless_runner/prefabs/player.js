@@ -69,4 +69,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.hunger -= 0.01;
         console.log(this.hunger);
     }
+
+    reset(){
+        this.life = this.maxLife;
+        this.hunger = this.maxHunger;
+    }
 }
