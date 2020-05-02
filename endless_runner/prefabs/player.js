@@ -58,11 +58,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(2500);
         }
 
-        //decrease lifespan
-        //this.life -= 0.1;
-        //decrease hunger
-        this.hunger -= 0.01;
-
         //collision
         /*if(this.body.touching.right){
             console.log("rock");
