@@ -151,7 +151,7 @@ class Play extends Phaser.Scene {
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
-            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 30);
+            this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 20);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
@@ -197,10 +197,11 @@ class Play extends Phaser.Scene {
     }
 
     hungerBarUpdate(player, bar, barText, number){
-        player.hunger = player.hunger + number;
-
         if(player.hunger > player.maxHunger){
             player.hunger = player.maxHunger;
+        }
+        else{
+            player.hunger = player.hunger + number;
         }
 
         if(player.hunger >= 0){
@@ -278,7 +279,7 @@ class Play extends Phaser.Scene {
     newGeneration(){
         //player cutscene
 
-        //max out hugner and lifespan
+        //max out hunger and lifespan
         this.player.reset();
         //move kid and dad offscreen
         this.kid.y = 1790;
