@@ -59,9 +59,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //decrease lifespan
-        this.life--;
+        //this.life -= 0.1;
         //decrease hunger
-        this.hunger--;
+        this.hunger -= 0.01;
 
         //collision
         /*if(this.body.touching.right){
