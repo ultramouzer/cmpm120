@@ -178,12 +178,16 @@ class Play extends Phaser.Scene {
 
     hungerBarUpdate(player, bar, barText, number){
         player.hunger = player.hunger + number;
+
         if(player.hunger > player.maxHunger){
             player.hunger = player.maxHunger;
         }
-        barText.text = Math.round(player.hunger);
-        bar.setScale(player.hunger / player.maxHunger, 1);
-        bar.setPosition(1200 + ((player.maxHunger - player.hunger) * 2.5), 100);
+
+        if(player.hunger >= 0){
+            barText.text = Math.round(player.hunger);
+            bar.setScale(player.hunger / player.maxHunger, 1);
+            bar.setPosition(1200 + ((player.maxHunger - player.hunger) * 2.5), 100);
+        }
     }
 
     checkClawCollision(claw, object) {
