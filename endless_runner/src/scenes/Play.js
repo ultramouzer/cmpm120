@@ -143,11 +143,7 @@ class Play extends Phaser.Scene {
         this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
 
         //healthBar updates based on playtime + collision
-        //if player is above 3/4ths hunger, they regenerate health
-        if(this.player.hunger >= (this.player.maxHunger * 3/4) && this.player.life < this.player.maxLife){
-            console.log("Regenerating health");
-            this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
-        }
+        this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
