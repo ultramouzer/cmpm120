@@ -45,6 +45,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    takeDamage(value){
+        this.life -= value;
+    }
+
     isDead(){
         console.log("checking health")
         if(this.life <= 0 || this.hunger <= 0){

@@ -225,7 +225,8 @@ class Play extends Phaser.Scene {
                         console.log("The lion has collided with a rock!");
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
-                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -30);
+                        this.player.takeDamage(30);
+                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
@@ -235,7 +236,8 @@ class Play extends Phaser.Scene {
                 case "bird":
                     if (player.body.touching.right || player.body.touching.up) {
                         console.log("The lion has collided with a bird!");
-                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -20);
+                        this.player.takeDamage(20);
+                        this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
                         this.time.delayedCall(100, () => {
