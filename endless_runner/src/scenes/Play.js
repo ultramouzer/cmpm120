@@ -138,6 +138,11 @@ class Play extends Phaser.Scene {
             this.bird.reset();
         }
 
+        if(this.player.isDead()){
+            //player dead
+            this.scene.start("gameOverScene");
+        }
+
         /*//healthBar updates based on playtime + collision
         if(this.player.life < this.player.maxLife && this.player.life >= 0){
             this.healthBar.setScale(this.player.life / this.player.maxLife, 1);
