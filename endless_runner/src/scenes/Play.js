@@ -152,7 +152,6 @@ class Play extends Phaser.Scene {
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText, 30);
-            console.log(this.player.hunger);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
@@ -211,20 +210,21 @@ class Play extends Phaser.Scene {
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -30);
-                        /*player.beInvincible();
+                        player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);*/
+                        }, null, this);
                     }
                     break;
                 case "bird":
                     if (player.body.touching.right || player.body.touching.up) {
                         console.log("The lion has collided with a bird!");
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText, -20);
-                        /*player.beInvincible();
+                        //necessary to prevent multi-collision bug
+                        player.beInvincible();
                         this.time.delayedCall(100, () => {
                             player.dontBeInvincible();
-                        }, null, this);*/
+                        }, null, this);
                     }
                     break;
                 case "good":

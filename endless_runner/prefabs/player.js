@@ -36,15 +36,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         return this.hasKids;
     }
 
-    feed(value){
-        if(value + this.hunger >= this.maxHunger){
-            this.hunger = this.maxHunger;
-        }
-        else {
-            this.hunger += value;
-        }
-    }
-
     update() {
         //boundries
         this.x = 300;
@@ -63,11 +54,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(2500);
         }
 
-        //decrease lifespan
+        /*//decrease lifespan
         this.life -= 0.1;
         //decrease hunger
         this.hunger -= 0.1;
-        console.log(this.hunger);
+        console.log(this.hunger);*/
     }
 
     reset(){
