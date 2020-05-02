@@ -223,8 +223,8 @@ class Play extends Phaser.Scene {
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
                     
-                    this.time.delayedCall(10000, () => {this.newGeneration();}, null, this);
-                    //10 seconds delay
+                    this.time.delayedCall(60000, () => {this.newGeneration();}, null, this);
+                    //60 seconds delay
                     break;
                 case "ntr":
                     if (player.body.touching.right) {
