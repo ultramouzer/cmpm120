@@ -90,7 +90,7 @@ class Play extends Phaser.Scene {
 
         //create hunger bar
 
-        //create lifespan stats
+        //create lifespan bar and stats
         var lifeTextConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
