@@ -4,6 +4,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this); // add to existing, displayList, updateList
 
+        this.scene = scene;
         this.life = lifespan;
         this.maxLife = lifespan;
         this.hunger = hunger;
@@ -65,6 +66,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(Phaser.Input.Keyboard.JustDown(keyUp) && this.body.touching.down){
             this.airborn = true;
             //code for jump
+            this.scene.sound.play('jump');
             this.setVelocityY(-2500);
             //this.airborn = false;
         }

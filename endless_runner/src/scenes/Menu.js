@@ -5,7 +5,11 @@ class Menu extends Phaser.Scene {
 
     preload() {
         //load audio
-        
+        this.load.audio('sfx_select', './assets/blip_select12.wav');
+        this.load.audio('claw_whiff','./assets/main6a_Sword_Woosh.wav');
+        this.load.audio('claw_hit','./assets/main44_Sword_Sweetspot.wav');
+        this.load.audio('got_hit','./assets/main2d.wav');
+        this.load.audio('jump', './assets/mario_jump_cut.wav');
     }
 
     create() {
@@ -45,7 +49,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyRight)) {
-            console.log("pressed right");
+            this.sound.play('sfx_select');
             this.scene.start("playScene");
         }
     }

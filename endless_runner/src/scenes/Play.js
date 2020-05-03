@@ -6,7 +6,6 @@ class Play extends Phaser.Scene {
     "use strict"; 
     
     preload() {
-        //no assets yet
         this.load.image('lion', './assets/lion_run_scaled.png');
         this.load.image('grass', './assets/grass.jpg');
         this.load.image('background', './assets/background.jpg');
@@ -22,7 +21,6 @@ class Play extends Phaser.Scene {
         this.load.image('healthBar', './assets/Health Bar.png');
         this.load.image('hungerBar', './assets/Hunger Bar.png');
         this.load.image('emptyBar', './assets/Empty Bar.png');
-
     }
 
     create() {
@@ -37,7 +35,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Player(this, 300, 69, 'lion', 0, 500, 100).setOrigin(0, 0);
+        this.player = new Player(this, 300, 69, 'lion', 0, 600, 100).setOrigin(0, 0);
         this.physics.world.enable(this.player);
         this.player.setGravityY(6969);
         this.player.setBounce(0);
@@ -147,17 +145,20 @@ class Play extends Phaser.Scene {
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
             console.log("zebra got hit");
+            this.sound.play('claw_hit');
             this.player.feed(20);
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
             console.log("no ntr allowed");
+            this.sound.play('claw_hit');
             this.uglyBastard.reset();
         }
         
         if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
+            this.sound.play('claw_hit');
             this.player.feed(5);
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.bird.reset();
@@ -167,19 +168,6 @@ class Play extends Phaser.Scene {
             //player dead
             this.scene.start("gameOverScene");
         }
-
-        /*//healthBar updates based on playtime + collision
-        if(this.player.life < this.player.maxLife && this.player.life >= 0){
-            this.healthBar.setScale(this.player.life / this.player.maxLife, 1);
-            this.healthBar.setPosition(350 - ((this.player.maxLife - this.player.life) / 2), 100);
-        }*/
-
-        /*//hungerBar updates based on food
-        if(this.player.hunger < this.player.maxHunger && this.player.hunger >= 0){
-            this.hungerText.text = this.player.hunger;
-            this.hungerBar.setScale(this.player.hunger / this.player.maxHunger, 1);
-            this.hungerBar.setPosition(1200 + ((this.player.maxHunger - this.player.hunger) * 2.5), 100);
-        }*/
 
         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
         this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
@@ -222,6 +210,7 @@ class Play extends Phaser.Scene {
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
                         this.player.takeDamage(30);
+                        this.sound.play('got_hit');
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         player.beInvincible();
                         this.time.delayedCall(100, () => {
@@ -233,6 +222,7 @@ class Play extends Phaser.Scene {
                     if (player.body.touching.right || player.body.touching.up) {
                         console.log("The lion has collided with a bird!");
                         this.player.takeDamage(20);
+                        this.sound.play('got_hit');
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
@@ -254,13 +244,14 @@ class Play extends Phaser.Scene {
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
                     
-                    this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
+                    raiseKid = this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
                     //25 seconds until maturity
                     break;
                 case "ntr":
                     if (player.body.touching.right) {
                         //kill the kids and get ntred
-                        console.log("you got ntred");
+                        raiseKid.remove();
+                        raiseKid = this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
                         this.uglyBastard.reset();
                     }
                     break;
