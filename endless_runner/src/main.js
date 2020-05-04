@@ -17,7 +17,7 @@ let config = {
     scene:  [Menu, Play, GameOver],
     physics:{
         default:'arcade',
-        arcade:{debug:true}
+        arcade:{debug:false}
     }
 }
 
