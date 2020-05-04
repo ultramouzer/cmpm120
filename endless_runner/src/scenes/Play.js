@@ -21,6 +21,10 @@ class Play extends Phaser.Scene {
         this.load.image('healthBar', './assets/Health Bar.png');
         this.load.image('hungerBar', './assets/Hunger Bar.png');
         this.load.image('emptyBar', './assets/Empty Bar.png');
+
+        // load spritesheet
+        this.load.spritesheet('attack', './assets/lion_run_attack-Sheet.png', {frameWidth: 269, frameHeight: 137, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('sex', './assets/lion_mating.png', {frameWidth: 480, frameHeight: 260, startFrame: 0, endFrame: 16});
     }
 
     create() {
@@ -125,6 +129,19 @@ class Play extends Phaser.Scene {
         }
         this.hungerTitle = this.add.text(1320, 40, "Hunger", hungerTextConfig.title);
         this.hungerText = this.add.text(1390, 90, this.player.hunger, hungerTextConfig.text);
+
+        // animation config
+        this.anims.create({
+            key: 'attack',
+            frames: this.anims.generateFrameNumbers('attack', { start: 0, end: 9, first: 0}),
+            frameRate: 30
+        });
+
+        this.anims.create({
+            key: 'fucking',
+            frames: this.anims.generateFrameNumbers('sex', { start: 0, end: 16, first: 0}),
+            frameRate: 30
+        });
     }
 
     update() {
@@ -209,7 +226,7 @@ class Play extends Phaser.Scene {
                         console.log("The lion has collided with a rock!");
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
-                        this.player.takeDamage(30);
+                        player.takeDamage(30);
                         this.sound.play('got_hit');
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         player.beInvincible();
@@ -221,7 +238,7 @@ class Play extends Phaser.Scene {
                 case "bird":
                     if (player.body.touching.right || player.body.touching.up) {
                         console.log("The lion has collided with a bird!");
-                        this.player.takeDamage(20);
+                        player.takeDamage(20);
                         this.sound.play('got_hit');
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
                         //necessary to prevent multi-collision bug
@@ -233,11 +250,22 @@ class Play extends Phaser.Scene {
                     break;
                 case "good":
                     //code for fucking, play animation
-                    console.log("baby making time");
+                    player.alpha = 0;                       // make player invisible
 
-                    //dad and kids show up on screen
-                    this.dad.y = 700;
-                    this.kid.y = 790;
+                    let fuck = this.add.sprite(player.x, 600, 'sex').setOrigin(0, 0);
+                    fuck.anims.play('fucking');        // play fucking animation
+                    //remove player from screen for a bit
+                    player.y = 10000;
+                    fuck.on('animationcomplete', () => {    // callback after animation completes
+                        player.y = 600;                     // reset player position
+                        player.alpha = 1;                   // make player visible again
+                        fuck.destroy();                     // remove explosion sprite
+
+                        //dad and kids show up on screen
+                        this.dad.y = 700;
+                        this.kid.y = 790;
+                    });
+                    
                     //old mate goes off screen
                     this.mate.y = 1690;
                     //ugly bastard comes on screen
