@@ -51,7 +51,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     isDead(){
-        console.log("checking health")
         if(this.life <= 0 || this.hunger <= 0){
             return true;
         }
@@ -80,7 +79,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.life -= 0.1;
         //decrease hunger
         this.hunger -= 0.1;
-        console.log(this.hunger);
     }
 
     reset(){

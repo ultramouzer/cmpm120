@@ -10,6 +10,10 @@ class Menu extends Phaser.Scene {
         this.load.audio('claw_hit','./assets/main44_Sword_Sweetspot.wav');
         this.load.audio('got_hit','./assets/main2d.wav');
         this.load.audio('jump', './assets/mario_jump_cut.wav');
+        this.load.audio('yamete', './assets/Filthy_Frank_YAMETE_custom.wav');
+        this.load.audio('dawn_brigade', './assets/is_it_the_dawn_brigade.wav');
+        this.load.audio('just_a_bird', './assets/it_was_just_a_bird.wav');
+        this.load.audio('mushroom', './assets/Mario_Mushroom.wav');
     }
 
     create() {

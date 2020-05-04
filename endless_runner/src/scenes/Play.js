@@ -6,17 +6,18 @@ class Play extends Phaser.Scene {
     "use strict";
 
     preload() {
-        this.load.image('lion', './assets/lion_run_scaled.png');
+        this.load.image('lion', './assets/lion_run_custom.png');
         this.load.image('grass', './assets/grass.jpg');
         this.load.image('background', './assets/background.jpg');
-        this.load.image('rock', './assets/rock_scaled.png');
-        this.load.image('is_it_the_dawn_brigade', './assets/just_a_bird.png');
+        this.load.image('rock', './assets/rock_scaled_custom.png');
+        this.load.image('is_it_the_dawn_brigade', './assets/just_a_bird_custom.png');
         this.load.image('claw', './assets/claw.png');
-        this.load.image('zebra', './assets/zebra_scaled.png');
-        this.load.image('mate', './assets/lion_good.png');
-        this.load.image('uglyBastard', './assets/lion_bad.png');
-        this.load.image('dad', './assets/lion_mate.png');
-        this.load.image('kid', './assets/lion_cub_scaled.png');
+        this.load.image('claw2', './assets/claw2.png');
+        this.load.image('zebra', './assets/zebra_new.png');
+        this.load.image('mate', './assets/lion_mate_custom.png');
+        this.load.image('uglyBastard', './assets/lion_mate_evil.png');
+        this.load.image('dad', './assets/lion_dad.png');
+        this.load.image('kid', './assets/lion_cub_custom.png');
 
         this.load.image('healthBar', './assets/Health Bar.png');
         this.load.image('hungerBar', './assets/Hunger Bar.png');
@@ -40,6 +41,12 @@ class Play extends Phaser.Scene {
             frameHeight: 137,
             startFrame: 0,
             endFrame: 13
+        });
+        this.load.spritesheet('evil_lion', './assets/lion_mate_evil_attack-Sheet.png', {
+            frameWidth: 269,
+            frameHeight: 148,
+            startFrame: 0,
+            endFrame: 6
         });
     }
 
@@ -87,6 +94,8 @@ class Play extends Phaser.Scene {
 
         //create attack
         this.claw = new Attack(this, 400, 1690, 'claw', this.player).setOrigin(0, 0);
+        this.claw2 = new Attack(this, 400, 1690, 'claw2', this.player).setOrigin(0, 0);
+        this.claw3 = new Attack(this, 400, 1690, 'claw2', this.player).setOrigin(0, 0);
 
         //create food
         this.zebra = new Food(this, game.config.width + 3000, 660, 'zebra', 0, 30).setOrigin(0, 0);
@@ -176,6 +185,16 @@ class Play extends Phaser.Scene {
             }),
             frameRate: 13
         });
+
+        this.anims.create({
+            key: 'lion_ntr',
+            frames: this.anims.generateFrameNumbers('evil_lion', {
+                start: 0,
+                end: 6,
+                first: 0
+            }),
+            frameRate: 12
+        });
     }
 
     update() {
@@ -195,20 +214,17 @@ class Play extends Phaser.Scene {
         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
 
         if (this.checkClawCollision(this.claw, this.zebra)) {
-            console.log("zebra got hit");
             this.sound.play('claw_hit');
             this.player.feed(20);
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
             this.zebra.reset();
         }
         if (this.checkClawCollision(this.claw, this.uglyBastard)) {
-            console.log("no ntr allowed");
             this.sound.play('claw_hit');
             this.uglyBastard.reset();
         }
 
         if (this.checkClawCollision(this.claw, this.bird)) {
-            console.log("bird got hit");
             this.sound.play('claw_hit');
             this.player.feed(5);
             this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
@@ -257,7 +273,6 @@ class Play extends Phaser.Scene {
             switch (object.type) {
                 case "rock":
                     if (player.body.touching.right) {
-                        console.log("The lion has collided with a rock!");
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
                         player.takeDamage(30);
@@ -271,10 +286,17 @@ class Play extends Phaser.Scene {
                     break;
                 case "bird":
                     if (player.body.touching.right || player.body.touching.up) {
-                        console.log("The lion has collided with a bird!");
                         player.takeDamage(20);
                         this.sound.play('got_hit');
                         this.healthBarUpdate(this.player, this.healthBar, this.lifeText);
+                        //is it the dawn brigade?
+                        let dawnBiga = Math.floor(Math.random() * Math.floor(2)); // 0 or 1
+                        if(dawnBiga == 0){
+                            this.sound.play('dawn_brigade');
+                        }
+                        else{
+                            this.sound.play('just_a_bird');
+                        }
                         //necessary to prevent multi-collision bug
                         player.beInvincible();
                         this.time.delayedCall(100, () => {
@@ -288,6 +310,7 @@ class Play extends Phaser.Scene {
                     player.beInvincible(); // make player invincible
                     let fuck = this.add.sprite(player.x, 600, 'sex').setOrigin(0, 0);
                     fuck.anims.play('fucking'); // play fucking animation
+                    this.sound.play('yamete');
                     //remove player from screen for a bit
                     player.y = 10000;
                     fuck.on('animationcomplete', () => { // callback after animation completes
@@ -300,6 +323,8 @@ class Play extends Phaser.Scene {
                         this.kid.y = 790;
 
                         player.dontBeInvincible(); // remove i-frames;
+                        this.rock.reset();
+                        this.bird.reset();
                     });
 
                     //old mate goes off screen
@@ -308,7 +333,7 @@ class Play extends Phaser.Scene {
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
 
-                    raiseKid = this.time.delayedCall(5000, () => {
+                    raiseKid = this.time.delayedCall(25000, () => {
                         this.newGeneration();
                     }, null, this);
                     //25 seconds until maturity
@@ -316,11 +341,52 @@ class Play extends Phaser.Scene {
                 case "ntr":
                     if (player.body.touching.right) {
                         //kill the kids and get ntred
-                        raiseKid.remove();
-                        raiseKid = this.time.delayedCall(5000, () => {
-                            this.newGeneration();
-                        }, null, this);
+                        player.beInvincible();
+                        let ntr = this.add.sprite(player.x, 600, 'evil_lion').setOrigin(0, 0);
+                        ntr.anims.play('lion_ntr');
+                        this.claw2.x = 100;
+                        this.claw3.x = 100;
+                        this.claw2.y = 700;
+                        this.claw3.y = 790;
+                        this.sound.play('claw_hit');
                         this.uglyBastard.reset();
+                        ntr.on('animationcomplete', () => { // callback after animation completes
+                            ntr.destroy(); // remove explosion sprite
+
+                            //remove dad and kids
+                            this.dad.y = 1700;
+                            this.kid.y = 1790;
+                            this.claw2.y = 1700;
+                            this.claw3.y = 1790;
+
+                            //code for fucking, play animation
+                            player.alpha = 0; // make player invisible
+                            let fuck = this.add.sprite(player.x, 600, 'sex').setOrigin(0, 0);
+                            fuck.anims.play('fucking'); // play fucking animation
+                            this.sound.play('yamete');
+                            //remove player from screen for a bit
+                            player.y = 10000;
+                            fuck.on('animationcomplete', () => { // callback after animation completes
+                                player.y = 600; // reset player position
+                                player.alpha = 1; // make player visible again
+                                fuck.destroy(); // remove explosion sprite
+
+                                //dad and kids show up on screen
+                                this.dad.y = 700;
+                                this.kid.y = 790;
+
+                                player.dontBeInvincible(); // remove i-frames;
+
+                                raiseKid.remove();
+                                raiseKid = this.time.delayedCall(25000, () => {
+                                    this.newGeneration();
+                                }, null, this);
+                                this.uglyBastard.reset();
+                                this.rock.reset();
+                                this.bird.reset();
+                            });
+                        });
+
                     }
                     break;
             }
@@ -329,12 +395,13 @@ class Play extends Phaser.Scene {
 
     newGeneration() {
         //growth cutscene
-        this.kid.y = 1790;                   //move kid offscreen
-        this.dad.y = 1700;                   //move dad offscreen
+        this.kid.y = 1790; //move kid offscreen
+        this.dad.y = 1700; //move dad offscreen
         this.player.alpha = 0;
         this.player.beInvincible();
         let evolve = this.add.sprite(this.kid.x, 750, 'mature').setOrigin(0, 0);
         evolve.anims.play('grow'); // play animation
+        this.sound.play('mushroom');
         evolve.on('animationcomplete', () => { // callback after animation completes
             evolve.destroy(); // remove explosion sprite
             this.player.alpha = 1;
