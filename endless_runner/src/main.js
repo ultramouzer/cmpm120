@@ -19,3 +19,6 @@ game.settings = {
 
 // reserve keyboard vars
 let keyUp, keyDown, keyLeft, keyRight, keySpace;
+
+// reserver timer var
+let raiseKid;
