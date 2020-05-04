@@ -3,8 +3,8 @@ class Play extends Phaser.Scene {
         super("playScene"); //playScene is a Scene
     }
 
-    "use strict"; 
-    
+    "use strict";
+
     preload() {
         this.load.image('lion', './assets/lion_run_scaled.png');
         this.load.image('grass', './assets/grass.jpg');
@@ -23,8 +23,24 @@ class Play extends Phaser.Scene {
         this.load.image('emptyBar', './assets/Empty Bar.png');
 
         // load spritesheet
-        this.load.spritesheet('attack', './assets/lion_run_attack-Sheet.png', {frameWidth: 269, frameHeight: 137, startFrame: 0, endFrame: 9});
-        this.load.spritesheet('sex', './assets/lion_mating.png', {frameWidth: 480, frameHeight: 260, startFrame: 0, endFrame: 16});
+        this.load.spritesheet('attack', './assets/lion_run_attack-Sheet.png', {
+            frameWidth: 269,
+            frameHeight: 137,
+            startFrame: 0,
+            endFrame: 9
+        });
+        this.load.spritesheet('sex', './assets/lion_mating.png', {
+            frameWidth: 480,
+            frameHeight: 260,
+            startFrame: 0,
+            endFrame: 16
+        });
+        this.load.spritesheet('mature', './assets/lion_cub_evo-Sheet.png', {
+            frameWidth: 269,
+            frameHeight: 137,
+            startFrame: 0,
+            endFrame: 13
+        });
     }
 
     create() {
@@ -133,14 +149,32 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'attack',
-            frames: this.anims.generateFrameNumbers('attack', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('attack', {
+                start: 0,
+                end: 9,
+                first: 0
+            }),
             frameRate: 30
         });
 
         this.anims.create({
             key: 'fucking',
-            frames: this.anims.generateFrameNumbers('sex', { start: 0, end: 16, first: 0}),
+            frames: this.anims.generateFrameNumbers('sex', {
+                start: 0,
+                end: 16,
+                first: 0
+            }),
             frameRate: 30
+        });
+
+        this.anims.create({
+            key: 'grow',
+            frames: this.anims.generateFrameNumbers('mature', {
+                start: 0,
+                end: 13,
+                first: 0
+            }),
+            frameRate: 13
         });
     }
 
@@ -172,7 +206,7 @@ class Play extends Phaser.Scene {
             this.sound.play('claw_hit');
             this.uglyBastard.reset();
         }
-        
+
         if (this.checkClawCollision(this.claw, this.bird)) {
             console.log("bird got hit");
             this.sound.play('claw_hit');
@@ -181,7 +215,7 @@ class Play extends Phaser.Scene {
             this.bird.reset();
         }
 
-        if(this.player.isDead()){
+        if (this.player.isDead()) {
             //player dead
             this.scene.start("gameOverScene");
         }
@@ -190,16 +224,16 @@ class Play extends Phaser.Scene {
         this.hungerBarUpdate(this.player, this.hungerBar, this.hungerText);
     }
 
-    healthBarUpdate(player, bar, barText){
-        if(player.life <= player.maxLife && player.life >= 0){
+    healthBarUpdate(player, bar, barText) {
+        if (player.life <= player.maxLife && player.life >= 0) {
             barText.text = Math.round(player.life);
             bar.setScale(player.life / player.maxLife, 1);
             bar.setPosition(350 - ((player.maxLife - player.life) / 2), 100);
-        } 
+        }
     }
 
-    hungerBarUpdate(player, bar, barText){
-        if(player.hunger <= player.maxHunger && player.hunger >= 0){
+    hungerBarUpdate(player, bar, barText) {
+        if (player.hunger <= player.maxHunger && player.hunger >= 0) {
             barText.text = Math.round(player.hunger);
             bar.setScale(player.hunger / player.maxHunger, 1);
             bar.setPosition(1200 + ((player.maxHunger - player.hunger) * 2.5), 100);
@@ -250,36 +284,42 @@ class Play extends Phaser.Scene {
                     break;
                 case "good":
                     //code for fucking, play animation
-                    player.alpha = 0;                       // make player invisible
-
+                    player.alpha = 0; // make player invisible
+                    player.beInvincible(); // make player invincible
                     let fuck = this.add.sprite(player.x, 600, 'sex').setOrigin(0, 0);
-                    fuck.anims.play('fucking');        // play fucking animation
+                    fuck.anims.play('fucking'); // play fucking animation
                     //remove player from screen for a bit
                     player.y = 10000;
-                    fuck.on('animationcomplete', () => {    // callback after animation completes
-                        player.y = 600;                     // reset player position
-                        player.alpha = 1;                   // make player visible again
-                        fuck.destroy();                     // remove explosion sprite
+                    fuck.on('animationcomplete', () => { // callback after animation completes
+                        player.y = 600; // reset player position
+                        player.alpha = 1; // make player visible again
+                        fuck.destroy(); // remove explosion sprite
 
                         //dad and kids show up on screen
                         this.dad.y = 700;
                         this.kid.y = 790;
+
+                        player.dontBeInvincible(); // remove i-frames;
                     });
-                    
+
                     //old mate goes off screen
                     this.mate.y = 1690;
                     //ugly bastard comes on screen
                     this.uglyBastard.y = 690;
                     this.uglyBastard.x = game.config.width + (420 * 30);
-                    
-                    raiseKid = this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
+
+                    raiseKid = this.time.delayedCall(5000, () => {
+                        this.newGeneration();
+                    }, null, this);
                     //25 seconds until maturity
                     break;
                 case "ntr":
                     if (player.body.touching.right) {
                         //kill the kids and get ntred
                         raiseKid.remove();
-                        raiseKid = this.time.delayedCall(25000, () => {this.newGeneration();}, null, this);
+                        raiseKid = this.time.delayedCall(5000, () => {
+                            this.newGeneration();
+                        }, null, this);
                         this.uglyBastard.reset();
                     }
                     break;
@@ -287,24 +327,32 @@ class Play extends Phaser.Scene {
         }
     }
 
-    newGeneration(){
-        //player cutscene
-
-        //max out hugner and lifespan
+    newGeneration() {
+        //growth cutscene
+        this.kid.y = 1790;                   //move kid offscreen
+        this.dad.y = 1700;                   //move dad offscreen
+        this.player.alpha = 0;
+        this.player.beInvincible();
+        let evolve = this.add.sprite(this.kid.x, 750, 'mature').setOrigin(0, 0);
+        evolve.anims.play('grow'); // play animation
+        evolve.on('animationcomplete', () => { // callback after animation completes
+            evolve.destroy(); // remove explosion sprite
+            this.player.alpha = 1;
+            //reset mate
+            this.mate.x = game.config.width + (420 * 69);
+            this.mate.y = 690;
+            //reset obstacles
+            this.rock.reset();
+            this.bird.reset();
+            //reset zebra
+            this.zebra.reset();
+            //move ntr lion offscreen
+            this.uglyBastard.y = 1690;
+            this.uglyBastard.x = game.config.width + (420 * 30);
+            this.player.dontBeInvincible();
+        });
+        //max out hunger and lifespan
         this.player.reset();
-        //move kid and dad offscreen
-        this.kid.y = 1790;
-        this.dad.y = 1700;
-        //reset mate
-        this.mate.x = game.config.width + (420 * 69);
-        this.mate.y = 690;
-        //reset obstacles
-        this.rock.reset();
-        this.bird.reset();
-        //reset zebra
-        this.zebra.reset();
-        //move ntr lion offscreen
-        this.uglyBastard.y = 1690;
-        this.uglyBastard.x = game.config.width + (420 * 30);
+
     }
 }
