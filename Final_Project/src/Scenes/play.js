@@ -16,7 +16,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Ball(this, 450, 450, 'temp');
+        this.player = new Ball(this, 450, 250, 'temp');
     }
 
     update() {
