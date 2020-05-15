@@ -1,19 +1,19 @@
 class Menu extends Phaser.Scene {
-    constructor() {
-        super("menuScene");//playScene is a Scene
+    constructor(){
+        super("menuScene");
     }
 
-    preload() {
+    "use strict";
+
+    preload(){
 
     }
 
-    create() {
-        // define keys
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    create(){
+
     }
 
-    update() {
-        
+    update(){
+
     }
 }
