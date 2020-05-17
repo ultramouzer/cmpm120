@@ -16,10 +16,14 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         }*/
 
         if(keyLeft.isDown){
-            this.x -= 10;
+            this.x -= 10 * game.global.timeDilation;
         }
         if(keyRight.isDown){
-            this.x += 10;
+            this.x += 10 * game.global.timeDilation;
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(keySpace)){
+            this.shrink();
         }
     }
 
@@ -32,6 +36,8 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     shrink(){
         this.limit -= 10;
         this.scale -= 0.1;
+        game.global.timeDilation += 0.1;
+        console.log(game.global.timeDilation);
         this.setScale(this.scale);
     }
 }

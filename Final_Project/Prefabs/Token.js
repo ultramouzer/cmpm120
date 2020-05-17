@@ -3,7 +3,7 @@ class Token extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); // add to existing, displayList, updateList
         this.score = 10;
-        this.speed = Math.random(0, game.settings.defaultTokenSpeed);
+        this.speed = Math.random(1, game.settings.defaultTokenSpeed);
     }
 
     update(){
