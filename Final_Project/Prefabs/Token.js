@@ -7,12 +7,16 @@ class Token extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(){
-        this.y -= this.speed;
+        if(game.global.timeDilation >= 0){
+            this.y -= this.speed * game.global.timeDilation;
+        } else {
+            console.log("Max time dilation has been reached!");
+        }
 
         if(this.y <= 0 - this.height){
             console.log("destroying");
             this.destroy();
-            game.settings.destroyedToken = true;
+            game.global.destroyedTokens = true;
         }
     }
 

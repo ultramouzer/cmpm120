@@ -17,7 +17,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Ball(this, 450, 250, 'ball');
+        this.player = new Ball(this, game.config.width / 2, 250, 'ball');
         this.physics.world.enable(this.player);
 
         //create tokens
@@ -33,6 +33,8 @@ class Play extends Phaser.Scene {
         this.physics.world.enable(this.tokens);
 
         //create temporary rectangles (will replace with a tilemap later on)
+        this.add.rectangle(game.config.width / 8,0, 30, 720, 0xFFFFFF).setOrigin(0,0);
+        this.add.rectangle(game.config.width * 7 / 8, 0, 30, 720, 0xFFFFFF).setOrigin(0,0);
         
         //create colliders
         this.physics.add.collider(this.player, this.tokens, this.tokenCollision, null, this);
@@ -42,25 +44,31 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.tokens.preUpdate();
 
-        if(game.settings.destroyedToken){
+        if(game.global.destroyedToken){
             this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
-            game.settings.destroyedToken = false;
+            game.global.destroyedToken = false;
         }
     }
 
     generateTokens(x, y){
-        this.tokens.add(new Token(this, x, y, 'token' ,0));
+        this.tokens.add(new Token(this, x, y, 'token', 0));
     }
 
     tokenCollision(player, object){
-        if(!player.isInvincible){
-            switch(object.type){
-                case "token":
-                    console.log("Collided with a token!");
-                    object.destroy();
-                    game.settings.destroyedToken = true;
-                    break;
-            }
+        console.log("Collided with a token!");
+        object.destroy();
+        game.global.destroyedToken = true;
+        player.grow();
+        this.timeDilation();
+    }
+
+    timeDilation(){
+        if(game.global.timeDilation > 0){
+            console.log("Beginning time dilation!");
+            game.global.timeDilation -= 0.1;
+            console.log(game.global.timeDilation);
+        } else {
+            console.log("Max time dilation reached!");
         }
     }
 }
