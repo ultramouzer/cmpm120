@@ -11,3 +11,9 @@ let game = new Phaser.Game(config);
 
 // reserve keyboard vars
 let keyUp, keyDown, keyLeft, keyRight, keySpace;
+
+game.settings = {
+    maxTokens: 5,
+    defaultTokenSpeed: 2,
+    destroyedTokens: false,
+}

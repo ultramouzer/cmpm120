@@ -3,16 +3,17 @@ class Ball extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); // add to existing, displayList, updateList
         this.scale = 1;
-        this.limit = 100
+        this.limit = 500
     }
 
     update() {
-        if(keyUp.isDown && this.limit < 200){
+        /*if(keyUp.isDown && this.limit < 200){
             this.grow();
         }
         if(keyDown.isDown && this.limit > 50){
             this.shrink();
-        }
+        }*/
+
         if(keyLeft.isDown){
             this.x -= 10;
         }
