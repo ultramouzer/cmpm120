@@ -11,7 +11,7 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         /*if(keyUp.isDown && this.limit < 200){
             this.grow();
         }*/
-        if(keyDown.isDown && this.limit > 100){
+        if(keyDown.isDown && this.growth > 100){
             this.shrink();
         }
 
