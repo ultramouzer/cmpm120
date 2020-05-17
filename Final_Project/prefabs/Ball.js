@@ -10,10 +10,10 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     update() {
         /*if(keyUp.isDown && this.limit < 200){
             this.grow();
-        }*/
+        }
         if(keyDown.isDown && this.growth > 100){
             this.shrink();
-        }
+        }*/
 
         if(keyLeft.isDown){
             this.x -= 10 * game.global.timeDilation;

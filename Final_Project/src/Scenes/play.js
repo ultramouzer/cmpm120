@@ -45,7 +45,10 @@ class Play extends Phaser.Scene {
         this.tokens.preUpdate();
 
         if(game.global.destroyedToken){
-            this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
+            console.log(this.tokens.countActive());
+            while(this.tokens.countActive() < game.settings.maxTokens){
+                this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
+            }
             game.global.destroyedToken = false;
         }
     }
@@ -56,8 +59,7 @@ class Play extends Phaser.Scene {
 
     tokenCollision(player, object){
         console.log("Collided with a token!");
-        //object.destroy();
-        object.reset();
+        object.destroy();
         game.global.destroyedToken = true;
         player.grow();
         this.timeDilation();
@@ -66,7 +68,7 @@ class Play extends Phaser.Scene {
     timeDilation(){
         if(game.global.timeDilation > 0){
             console.log("Beginning time dilation!");
-            game.global.timeDilation -= 0.01;
+            game.global.timeDilation -= 0.1;
             console.log(game.global.timeDilation);
         } else {
             console.log("Max time dilation reached!");
