@@ -3,7 +3,7 @@ class Token extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); // add to existing, displayList, updateList
         this.score = 10;
-        this.speed = Math.random(0, game.settings.defaultTokenSpeed);
+        this.speed = game.settings.defaultTokenSpeed;
     }
 
     update(){
@@ -15,13 +15,14 @@ class Token extends Phaser.Physics.Arcade.Sprite {
 
         if(this.y <= 0 - this.height){
             console.log("destroying");
+            this.reset();
             this.destroy();
             game.global.destroyedTokens = true;
         }
     }
 
-    /*reset(){
-        this.x = Math.random(400, 800);
-        this.y = game.config.height;
-    }*/
+    reset(){
+        this.x = 400 + 400 * Math.random();
+        this.y = game.config.height + 400 * Math.random();
+    }
 }
