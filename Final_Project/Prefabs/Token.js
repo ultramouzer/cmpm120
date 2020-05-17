@@ -15,13 +15,14 @@ class Token extends Phaser.Physics.Arcade.Sprite {
 
         if(this.y <= 0 - this.height){
             console.log("destroying");
+            this.reset();
             this.destroy();
             game.global.destroyedTokens = true;
         }
     }
 
-    /*reset(){
-        this.x = Math.random(400, 800);
-        this.y = game.config.height;
-    }*/
+    reset(){
+        this.x = 400 + 400 * Math.random();
+        this.y = game.config.height + 400 * Math.random();
+    }
 }
