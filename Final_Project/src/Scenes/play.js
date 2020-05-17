@@ -18,21 +18,24 @@ class Play extends Phaser.Scene {
 
         //create player
         this.player = new Ball(this, 450, 250, 'ball');
+        this.physics.world.enable(this.player);
 
         //create tokens
-        this.tokens = this.add.group({
+        this.tokens = this.physics.add.group({
             defaultKey: 'token',
             runChildUpdate: true
-        });
-
-        this.destroyedToken = false;
+        });    
 
         for(var i = 0; i < game.settings.maxTokens; i++){
             this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
         }
 
+        this.physics.world.enable(this.tokens);
+
         //create temporary rectangles (will replace with a tilemap later on)
         
+        //create colliders
+        this.physics.add.collider(this.player, this.tokens, this.tokenCollision, null, this);
     }
 
     update() {
@@ -47,5 +50,17 @@ class Play extends Phaser.Scene {
 
     generateTokens(x, y){
         this.tokens.add(new Token(this, x, y, 'token' ,0));
+    }
+
+    tokenCollision(player, object){
+        if(!player.isInvincible){
+            switch(object.type){
+                case "token":
+                    console.log("Collided with a token!");
+                    object.destroy();
+                    game.settings.destroyedToken = true;
+                    break;
+            }
+        }
     }
 }

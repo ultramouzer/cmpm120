@@ -1,9 +1,10 @@
-class Ball extends Phaser.GameObjects.Sprite {
+class Ball extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame,) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); // add to existing, displayList, updateList
         this.scale = 1;
         this.limit = 500
+        this.isInvincible = false;
     }
 
     update() {

@@ -5,6 +5,10 @@ let config = {
     scene: [/*Menu,*/ Play],
     scale: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    physics:{
+        default:'arcade',
+        arcade:{debug:false}
+    },
 }
 
 let game = new Phaser.Game(config);
