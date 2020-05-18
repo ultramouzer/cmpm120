@@ -23,7 +23,7 @@ class Play extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //create player
-        this.player = new Ball(this, game.config.width / 2, 250, 'ball');
+        this.player = new Ball(this, game.config.width / 2, 250, 'ball').setScale(5);
         this.physics.world.enable(this.player);
 
         //create tokens
@@ -77,12 +77,12 @@ class Play extends Phaser.Scene {
     tokenCollision(player, object){
         console.log("Collided with a token!");
         this.sound.play('sfx_absorb');
-        this.sound.setVolume(0.2);
+        this.sound.setVolume(0.1);
         this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
         object.reset();
         game.global.destroyedToken = true;
-        player.grow();
+        player.shrink();
         this.timeDilation();
     }
 
@@ -90,7 +90,7 @@ class Play extends Phaser.Scene {
     timeDilation(){
         if(game.global.timeDilation > 0){
             console.log("Beginning time dilation!");
-            game.global.timeDilation -= 0.1;
+            game.global.timeDilation += 0.1;
             console.log(game.global.timeDilation);
         } else {
             console.log("Max time dilation reached!");

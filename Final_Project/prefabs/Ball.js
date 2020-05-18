@@ -27,7 +27,7 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         }
 
         if(Phaser.Input.Keyboard.JustDown(keySpace)){
-            this.shrink();
+            this.grow();
         }
     }
 
@@ -40,6 +40,8 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
             this.growth += 10;
             this.scale += 0.1;
             this.setScale(this.scale);
+            game.global.timeDilation -= 0.1;
+            console.log(game.global.timeDilation);
         }
     }
 
@@ -47,8 +49,6 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         this.purgeSound.play();
         this.limit -= 10;
         this.scale -= 0.1;
-        game.global.timeDilation += 0.1;
-        console.log(game.global.timeDilation);
         this.setScale(this.scale);
     }
 }
