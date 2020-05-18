@@ -60,6 +60,7 @@ class Play extends Phaser.Scene {
     }
 
     generateTokens(x, y){
+        y = y + 400 * Math.random();
         this.tokens.add(new Token(this, x, y, 'token', 0));
     }
 
