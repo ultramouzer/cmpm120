@@ -2,7 +2,7 @@ let config = {
     type: Phaser.AUTO,
     width: 960,
     height: 720,
-    scene: [/*Menu,*/ Play],
+    scene: [Menu, Play],
     scale: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     physics:{
@@ -14,7 +14,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 // reserve keyboard vars
-let keyUp, keyDown, keyLeft, keyRight, keySpace;
+let keyUp, keyDown, keyLeft, keyRight, keySpace, keyF;
 
 // game settings
 game.settings = {
