@@ -69,6 +69,7 @@ class Play extends Phaser.Scene {
 
     //generates a token at a random location
     generateTokens(x, y){
+        y = y + 400 * Math.random();
         this.tokens.add(new Token(this, x, y, 'token', 0));
     }
 
@@ -79,6 +80,7 @@ class Play extends Phaser.Scene {
         this.sound.setVolume(0.2);
         this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
+        object.reset();
         game.global.destroyedToken = true;
         player.grow();
         this.timeDilation();
@@ -88,7 +90,7 @@ class Play extends Phaser.Scene {
     timeDilation(){
         if(game.global.timeDilation > 0){
             console.log("Beginning time dilation!");
-            game.global.timeDilation -= 0.1;
+            game.global.timeDilation -= 0.01;
             console.log(game.global.timeDilation);
         } else {
             console.log("Max time dilation reached!");
