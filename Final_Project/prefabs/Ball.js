@@ -5,6 +5,8 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         this.scale = 1;
         this.growth = 100
         this.isInvincible = false;
+
+        this.purgeSound = scene.sound.add('sfx_purge');
     }
 
     update() {
@@ -40,6 +42,7 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     }
 
     shrink(){
+        this.purgeSound.play();
         this.limit -= 10;
         this.scale -= 0.1;
         game.global.timeDilation += 0.1;
