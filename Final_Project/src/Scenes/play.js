@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         //Load art
         this.load.image('ball', './assets/art/Ball.png');
         this.load.image('token', './assets/art/Token.png');
+        this.load.image('wall', './assets/art/Wall.png');
 
         //Load sound
         this.load.audio('sfx_absorb', './assets/sounds/protoAbsorb.wav');
@@ -31,6 +32,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         });    
 
+        //initial generation of tokens
         for(var i = 0; i < game.settings.maxTokens; i++){
             this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
         }
@@ -38,20 +40,26 @@ class Play extends Phaser.Scene {
         this.physics.world.enable(this.tokens);
 
         //create temporary rectangles (will replace with a tilemap later on)
-        this.add.rectangle(game.config.width / 8,0, 30, 720, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(game.config.width * 7 / 8, 0, 30, 720, 0xFFFFFF).setOrigin(0,0);
-        
+        this.leftRect = this.physics.add.image(game.config.width / 8, 0, 'wall').setOrigin(0,0);
+        this.rightRect = this.physics.add.image(game.config.width * 7 / 8, 0, 'wall').setOrigin(0,0);
+        this.leftRect.setImmovable();
+        this.rightRect.setImmovable();
+
         //create colliders
         this.physics.add.collider(this.player, this.tokens, this.tokenCollision, null, this);
+        this.physics.add.collider(this.player, this.leftRect);
+        this.physics.add.collider(this.player, this.rightRect);
     }
 
     update() {
+        //updates for prefabs
         this.player.update();
         this.tokens.preUpdate();
 
+        //if player has destroyed a token then game will spawn one in
         if(game.global.destroyedToken){
             console.log("Respawning tokens!");
-            console.log(this.tokens.countActive());
+            console.log(this.tokens.countActive() + 1);
             while(this.tokens.countActive() < game.settings.maxTokens){
                 this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
             }
@@ -59,13 +67,16 @@ class Play extends Phaser.Scene {
         }
     }
 
+    //generates a token at a random location
     generateTokens(x, y){
         this.tokens.add(new Token(this, x, y, 'token', 0));
     }
 
+    //collision with token
     tokenCollision(player, object){
         console.log("Collided with a token!");
         this.sound.play('sfx_absorb');
+        this.sound.setVolume(0.2);
         this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
         game.global.destroyedToken = true;
@@ -73,6 +84,7 @@ class Play extends Phaser.Scene {
         this.timeDilation();
     }
 
+    //time dilation management (1 is normal speed, 0 is full freeze, 2 is 2x speed)
     timeDilation(){
         if(game.global.timeDilation > 0){
             console.log("Beginning time dilation!");
