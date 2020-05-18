@@ -86,7 +86,8 @@ class Play extends Phaser.Scene {
         this.timeDilation();
     }
 
-    //time dilation management (1 is normal speed, 0 is full freeze, 2 is 2x speed)
+    //time dilation management 
+    //guide: (1 is normal speed, 0 is full freeze, 2 is 2x speed)
     timeDilation(){
         if(game.global.timeDilation > 0){
             console.log("Beginning time dilation!");
