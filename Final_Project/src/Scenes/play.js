@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new Ball(this, game.config.width / 2, 250, 'ball').setScale(5);
         this.physics.world.enable(this.player);
+        this.player.grow();
 
         //create tokens
         this.tokens = this.physics.add.group({

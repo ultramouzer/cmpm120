@@ -10,20 +10,20 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        if(keyUp.isDown){
-            this.y -= 10 * game.global.timeDilation;
+        /*if(keyUp.isDown){
+            this.y -= 10;
         }
 
         if(keyDown.isDown){
-            this.y += 10 * game.global.timeDilation;
-        }
+            this.y += 10;
+        }*/
 
         if(keyLeft.isDown){
-            this.x -= 10 * game.global.timeDilation;
+            this.x -= 10;
         }
 
         if(keyRight.isDown){
-            this.x += 10 * game.global.timeDilation;
+            this.x += 10;
         }
 
         if(Phaser.Input.Keyboard.JustDown(keySpace)){
