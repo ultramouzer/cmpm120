@@ -24,7 +24,11 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height / 2;
 
         this.add.text(centerX - 100, centerY - 64, 'Tears of Time', menuConfig);
-        this.add.text(centerX - 120, centerY, 'Press "F" to play', menuConfig);
+        this.add.text(centerX - 125, centerY, 'Press "F" to play', menuConfig);
+        this.add.text(centerX - 155, centerY + 64, 'Use Arrow Keys to move', menuConfig);
+        this.add.text(centerX - 155, centerY + 94, 'Collect Tokens to Grow', menuConfig);
+        this.add.text(centerX - 155, centerY + 124, 'Use Spacebar to Shrink', menuConfig);
+
 
         // menu controls
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);

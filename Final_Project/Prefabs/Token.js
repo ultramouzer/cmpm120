@@ -16,7 +16,6 @@ class Token extends Phaser.Physics.Arcade.Sprite {
         if(this.y <= 0 - this.height){
             console.log("Replacing token");
             this.reset();
-            //this.destroy();
             game.global.destroyedTokens = true;
         }
     }

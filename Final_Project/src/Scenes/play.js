@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('ball', './assets/art/Ball.png');
         this.load.image('token', './assets/art/Token.png');
         this.load.image('wall', './assets/art/Wall.png');
+        this.load.image('stars', './assets/art/Stars.png');
 
         //Load sound
         this.load.audio('sfx_absorb', './assets/sounds/protoAbsorb.wav');
@@ -21,6 +22,9 @@ class Play extends Phaser.Scene {
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        //create temporary stars (will replace later on)
+        this.stars = this.add.tileSprite(100, 0, 800, 720, 'stars').setOrigin(0,0);
 
         //create player
         this.player = new Ball(this, game.config.width / 2, 250, 'ball');
@@ -55,6 +59,9 @@ class Play extends Phaser.Scene {
         //updates for prefabs
         this.player.update();
         this.tokens.preUpdate();
+
+        //stars movement
+        this.stars.tilePositionY -= 4 * game.global.timeDilation;
 
         //if player has destroyed a token then game will spawn one in
         if(game.global.destroyedToken){
