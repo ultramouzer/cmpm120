@@ -4,12 +4,17 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ball', './assets/Ball.png');
-        this.load.image('token', './assets/Token.png');
+        //Load art
+        this.load.image('ball', './assets/art/Ball.png');
+        this.load.image('token', './assets/art/Token.png');
+
+        //Load sound
+        this.load.audio('sfx_absorb', './assets/sounds/protoAbsorb.wav');
+        this.load.audio('sfx_purge', './assets/sounds/protoPurge.wav');
     }
 
     create() {
-        // define keys
+        //define keys
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -45,7 +50,11 @@ class Play extends Phaser.Scene {
         this.tokens.preUpdate();
 
         if(game.global.destroyedToken){
-            this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
+            console.log("Respawning tokens!");
+            console.log(this.tokens.countActive());
+            while(this.tokens.countActive() < game.settings.maxTokens){
+                this.generateTokens(Phaser.Math.RND.between(200, 600), game.config.height);
+            }
             game.global.destroyedToken = false;
         }
     }
@@ -56,6 +65,8 @@ class Play extends Phaser.Scene {
 
     tokenCollision(player, object){
         console.log("Collided with a token!");
+        this.sound.play('sfx_absorb');
+        this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
         object.reset();
         game.global.destroyedToken = true;
