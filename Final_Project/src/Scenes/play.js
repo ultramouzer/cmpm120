@@ -5,14 +5,14 @@ class Play extends Phaser.Scene {
 
     preload() {
         //Load art
-        this.load.image('ball', './assets/art/Ball.png');
-        this.load.image('token', './assets/art/Token.png');
-        this.load.image('wall', './assets/art/Wall.png');
-        this.load.image('stars', './assets/art/Stars.png');
+        this.load.image('ball', './Assets/Art/Ball.png');
+        this.load.image('token', './Assets/Art/Token.png');
+        this.load.image('wall', './Assets/Art/Wall.png');
+        this.load.image('stars', './Assets/Art/Stars.png');
 
         //Load sound
-        this.load.audio('sfx_absorb', './assets/sounds/protoAbsorb.wav');
-        this.load.audio('sfx_purge', './assets/sounds/protoPurge.wav');
+        this.load.audio('sfx_absorb', './Assets/Sounds/protoAbsorb.wav');
+        this.load.audio('sfx_purge', './Assets/Sounds/protoPurge.wav');
     }
 
     create() {
