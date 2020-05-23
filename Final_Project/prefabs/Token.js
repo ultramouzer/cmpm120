@@ -8,7 +8,7 @@ class Token extends Phaser.Physics.Arcade.Sprite {
 
     update(){
         if(game.global.timeDilation >= 0){
-            this.y -= this.speed * game.global.timeDilation;
+            this.body.setVelocityY(-1 * this.speed * game.global.timeDilation);
         } else {
             console.log("Max time dilation has been reached!");
         }
@@ -22,6 +22,6 @@ class Token extends Phaser.Physics.Arcade.Sprite {
 
     reset(){
         this.x = 400 + 400 * Math.random();
-        this.y = game.config.height + 400 * Math.random();
+        this.y = game.config.height + 40 * Math.random();
     }
 }

@@ -29,6 +29,10 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new Ball(this, game.config.width / 2, 250, 'ball');
         this.physics.world.enable(this.player);
+        this.player.setDragY(100);
+        this.player.setDragX(100);
+        this.player.setMaxVelocity(400, 400);
+        this.player.setImmovable();
 
         //create tokens
         this.tokens = this.physics.add.group({
@@ -98,7 +102,7 @@ class Play extends Phaser.Scene {
     timeDilation(){
         if(game.global.timeDilation < 10){//set maximum speed here
             console.log("Beginning time dilation!");
-            game.global.timeDilation += 0.1;
+            game.global.timeDilation += 0.2;
             console.log(game.global.timeDilation);
         } else {
             console.log("Max time dilation reached!");
