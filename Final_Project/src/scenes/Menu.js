@@ -23,10 +23,10 @@ class Menu extends Phaser.Scene {
         let centerX = game.config.width / 2;
         let centerY = game.config.height / 2;
 
-        this.add.text(centerX - 100, centerY - 64, 'Tears of Time', menuConfig);
+        this.add.text(centerX - 100, centerY - 64, 'Raindrop', menuConfig);
         this.add.text(centerX - 125, centerY, 'Press "F" to play', menuConfig);
         this.add.text(centerX - 155, centerY + 64, 'Use Arrow Keys to move', menuConfig);
-        this.add.text(centerX - 155, centerY + 94, 'Collect Tokens to Grow', menuConfig);
+        this.add.text(centerX - 155, centerY + 94, 'Collect other rain droplets to Grow', menuConfig);
         this.add.text(centerX - 155, centerY + 124, 'Use Spacebar to Shrink', menuConfig);
 
 
