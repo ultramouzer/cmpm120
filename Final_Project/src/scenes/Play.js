@@ -96,9 +96,9 @@ class Play extends Phaser.Scene {
     //time dilation management 
     //guide: (1 is normal speed, 0 is full freeze, 2 is 2x speed)
     timeDilation(){
-        if(game.global.timeDilation > 0){
+        if(game.global.timeDilation < 10){//set maximum speed here
             console.log("Beginning time dilation!");
-            game.global.timeDilation -= 0.1;
+            game.global.timeDilation += 0.1;
             console.log(game.global.timeDilation);
         } else {
             console.log("Max time dilation reached!");

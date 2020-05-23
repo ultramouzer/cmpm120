@@ -18,8 +18,8 @@ let keyUp, keyDown, keyLeft, keyRight, keySpace, keyF;
 
 // game settings
 game.settings = {
-    maxTokens: 5,
-    defaultTokenSpeed: 2,
+    maxTokens: 2,
+    defaultTokenSpeed: 1,
 }
 
 game.global = {

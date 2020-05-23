@@ -3,27 +3,28 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); // add to existing, displayList, updateList
         this.scale = 1;
-        this.growth = 100
+        this.growth = 100;
         this.isInvincible = false;
 
         this.purgeSound = scene.sound.add('sfx_purge');
     }
 
     update() {
+        // become more difficult to controll the larger you grow
         if(keyUp.isDown){
-            this.y -= 10 * game.global.timeDilation;
+            this.y -= 20 * (1/game.global.timeDilation);
         }
 
         if(keyDown.isDown){
-            this.y += 10 * game.global.timeDilation;
+            this.y += 20 * (1/game.global.timeDilation);
         }
 
         if(keyLeft.isDown){
-            this.x -= 10 * game.global.timeDilation;
+            this.x -= 20 * (1/game.global.timeDilation);
         }
 
         if(keyRight.isDown){
-            this.x += 10 * game.global.timeDilation;
+            this.x += 20 * (1/game.global.timeDilation);
         }
 
         if(Phaser.Input.Keyboard.JustDown(keySpace)){
@@ -36,9 +37,10 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     }
 
     grow(){
-        if(this.growth <= 990){
+        if(this.growth < 5000){
             this.growth += 10;
             this.scale += 0.1;
+            
             this.setScale(this.scale);
         }
     }
@@ -47,7 +49,7 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         this.purgeSound.play();
         this.limit -= 10;
         this.scale -= 0.1;
-        game.global.timeDilation += 0.1;
+        game.global.timeDilation -= 0.1;
         console.log(game.global.timeDilation);
         this.setScale(this.scale);
     }
