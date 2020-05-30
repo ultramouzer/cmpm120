@@ -18,6 +18,30 @@ class Token extends Phaser.Physics.Arcade.Sprite {
             this.reset();
             game.global.destroyedTokens = true;
         }
+
+        if(keyUp.isDown){
+            this.body.velocity.y -= 25;
+        }
+
+        if(keyDown.isDown){
+            this.body.velocity.y += 25;
+        }
+
+        if(keyLeft.isDown){
+            this.body.velocity.x -= 25;
+        }
+
+        if(keyRight.isDown){
+            this.body.velocity.x += 25;
+        }
+
+        //wrap around X axis
+        if(this.x < 0){
+            this.x = game.config.width;
+        }
+        if(this.x > game.config.width){
+            this.x = 0;
+        }
     }
 
     reset(){

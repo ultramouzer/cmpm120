@@ -76,12 +76,23 @@ class Play extends Phaser.Scene {
             }
             game.global.destroyedToken = false;
         }
+
+        //check for win condition
+        if(this.player.getGrowth() >= 5000){
+            //this.scene.start('CutsceneScene');
+            this.scene.start('GameOverScene');
+        }
     }
 
     //generates a token at a random location
     generateTokens(x, y){
         y = y + 400 * Math.random();
-        this.tokens.add(new Token(this, x, y, 'token', 0));
+        this.aToken = new Token(this, x, y, 'token', 0);
+        this.physics.world.enable(this.aToken);
+        this.aToken.setDragY(100);
+        this.aToken.setDragX(100);
+        this.aToken.setMaxVelocity(500, 500);
+        this.tokens.add(this.aToken);
     }
 
     //collision with token

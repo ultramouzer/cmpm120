@@ -34,6 +34,22 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
         if(Phaser.Input.Keyboard.JustDown(keySpace)){
             this.shrink();
         }
+
+        //wrap around X axis
+        if(this.x < 0){
+            this.x = game.config.width;
+        }
+        if(this.x > game.config.width){
+            this.x = 0;
+        }
+
+        //wrap around Y axis
+        if(this.y < 0){
+            this.y = game.config.height;
+        }
+        if(this.y > game.config.height){
+            this.y = 0;
+        }
     }
 
     getGrowth(){
