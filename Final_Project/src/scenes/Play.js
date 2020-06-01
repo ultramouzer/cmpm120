@@ -5,8 +5,8 @@ class Play extends Phaser.Scene {
 
     preload() {
         //Load art
-        this.load.image('ball', './Assets/Art/Ball.png');
-        this.load.image('token', './Assets/Art/Token.png');
+        this.load.image('player', './Assets/Art/RaindropPlayer.png');
+        this.load.image('token', './Assets/Art/RaindropTokenSmall.png');
         this.load.image('wall', './Assets/Art/Wall.png');
         this.load.image('stars', './Assets/Art/Stars.png');
 
@@ -27,7 +27,7 @@ class Play extends Phaser.Scene {
         this.stars = this.add.tileSprite(100, 0, 800, 720, 'stars').setOrigin(0,0);
 
         //create player
-        this.player = new Ball(this, game.config.width / 2, 250, 'ball');
+        this.player = new Ball(this, game.config.width / 2, 250, 'player');
         this.physics.world.enable(this.player);
         this.player.setDragY(100);
         this.player.setDragX(100);
@@ -80,7 +80,7 @@ class Play extends Phaser.Scene {
         //check for win condition
         if(this.player.getGrowth() >= 5000){
             //this.scene.start('CutsceneScene');
-            this.scene.start('GameOverScene');
+            this.scene.start('menuScene');
         }
     }
 
