@@ -45,7 +45,7 @@ class Token extends Phaser.Physics.Arcade.Sprite {
     }
 
     reset(){
-        this.x = 400 + 400 * Math.random();
+        this.x = 960 * Math.random();
         this.y = game.config.height + 40 * Math.random();
     }
 }

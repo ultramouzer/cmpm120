@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         this.load.image('token', './Assets/Art/RaindropTokenSmall.png');
         this.load.image('wall', './Assets/Art/Wall.png');
         this.load.image('stars', './Assets/Art/Stars.png');
+        this.load.image('cloud', './Assets/Art/Cloud.png');
 
         //Load sound
         this.load.audio('sfx_absorb', './Assets/Sounds/protoAbsorb.wav');
@@ -25,6 +26,14 @@ class Play extends Phaser.Scene {
 
         //create temporary stars (will replace later on)
         this.stars = this.add.tileSprite(100, 0, 800, 720, 'stars').setOrigin(0,0);
+
+        //create background clouds
+        this.cloud1 = new Cloud(this, 200, 400, 'cloud', 5);
+        this.physics.world.enable(this.cloud1);
+        this.cloud1.setDragX(100);
+        this.cloud1.setDragY(100);
+        this.cloud1.setMaxVelocity(50,50);
+        this.cloud1.setImmovable();
 
         //create player
         this.player = new Ball(this, game.config.width / 2, 250, 'player');
@@ -63,6 +72,7 @@ class Play extends Phaser.Scene {
         //updates for prefabs
         this.player.update();
         this.tokens.preUpdate();
+        this.cloud1.update();
 
         //stars movement
         this.stars.tilePositionY -= 4 * game.global.timeDilation;
@@ -78,9 +88,9 @@ class Play extends Phaser.Scene {
         }
 
         //check for win condition
-        if(this.player.getGrowth() >= 5000){
-            //this.scene.start('CutsceneScene');
-            this.scene.start('menuScene');
+        if(this.player.getGrowth() >= 4000){
+            this.scene.start('CutsceneScene');
+            //this.scene.start('menuScene');
         }
     }
 
@@ -99,7 +109,7 @@ class Play extends Phaser.Scene {
     tokenCollision(player, object){
         console.log("Collided with a token!");
         this.sound.play('sfx_absorb');
-        this.sound.setVolume(0.2);
+        this.sound.setVolume(0.05);
         this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
         object.reset();
