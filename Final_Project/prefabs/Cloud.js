@@ -42,7 +42,7 @@ class Cloud extends Phaser.Physics.Arcade.Sprite {
     }
 
     reset(){
-        this.x = 960 * Math.random();
+        this.x = 800 * Math.random();
         this.y = game.config.height + 10 * Math.random();
     }
 }

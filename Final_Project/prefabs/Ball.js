@@ -31,10 +31,6 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
             this.body.velocity.x += 20 * (1/(game.global.timeDilation/2));
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keySpace)){
-            this.shrink();
-        }
-
         //wrap around X axis
         if(this.x < 0){
             this.x = game.config.width;

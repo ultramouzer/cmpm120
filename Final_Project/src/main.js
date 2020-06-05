@@ -1,6 +1,6 @@
 let config = {
     type: Phaser.AUTO,
-    width: 960,
+    width: 800,
     height: 720,
     scene: [Menu, Play, Cutscene],
     scale: Phaser.Scale.FIT,
@@ -18,7 +18,7 @@ let keyUp, keyDown, keyLeft, keyRight, keySpace, keyF;
 
 // game settings
 game.settings = {
-    maxTokens: 3,
+    maxTokens: 4,
     defaultTokenSpeed: 100,
 }
 
