@@ -14,6 +14,8 @@ class Play extends Phaser.Scene {
 
         //Load sound
         this.load.audio('sfx_absorb', './Assets/Sounds/267221__gkillhour__water-droplet.wav');
+        //water drop sound from:
+        //https://freesound.org/people/gkillhour/sounds/267221/
         this.load.audio('sfx_purge', './Assets/Sounds/protoPurge.wav');
     }
 

@@ -23,7 +23,7 @@ class Cutscene extends Phaser.Scene {
         //5000 = 5 seconds
         this.time.delayedCall(6900, () => {
             this.music.stop();
-            this.scene.start('menuScene');
+            this.scene.start('creditsScene');
         }, null, this);
     }
 }
