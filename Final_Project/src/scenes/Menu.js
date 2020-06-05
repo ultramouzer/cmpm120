@@ -25,9 +25,9 @@ class Menu extends Phaser.Scene {
 
         this.add.text(centerX - 100, centerY - 64, 'Raindrop', menuConfig);
         this.add.text(centerX - 125, centerY, 'Press "F" to play', menuConfig);
-        this.add.text(centerX - 155, centerY + 64, 'Use Arrow Keys to move', menuConfig);
+        this.add.text(centerX - 155, centerY + 64, 'Use Arrow Keys to blow wind', menuConfig);
         this.add.text(centerX - 155, centerY + 94, 'Collect other rain droplets to Grow', menuConfig);
-        this.add.text(centerX - 155, centerY + 124, 'Use Spacebar to Shrink', menuConfig);
+        this.add.text(centerX - 155, centerY + 124, 'Grow as large as you can', menuConfig);
 
 
         // menu controls

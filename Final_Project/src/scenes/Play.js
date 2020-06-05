@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
         }
 
         //check for win condition
-        if(this.player.getGrowth() >= 120){
+        if(this.player.getGrowth() >= 4000){
             this.scene.start('CutsceneScene');
             //this.scene.start('menuScene');
         }
