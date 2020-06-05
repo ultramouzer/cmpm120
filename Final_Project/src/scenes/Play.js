@@ -13,7 +13,7 @@ class Play extends Phaser.Scene {
         this.load.image('fog', './Assets/Art/Fog.png');
 
         //Load sound
-        this.load.audio('sfx_absorb', './Assets/Sounds/protoAbsorb.wav');
+        this.load.audio('sfx_absorb', './Assets/Sounds/267221__gkillhour__water-droplet.wav');
         this.load.audio('sfx_purge', './Assets/Sounds/protoPurge.wav');
     }
 
@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
         }
 
         //check for win condition
-        if(this.player.getGrowth() >= 4000){
+        if(this.player.getGrowth() >= 120){
             this.scene.start('CutsceneScene');
             //this.scene.start('menuScene');
         }
