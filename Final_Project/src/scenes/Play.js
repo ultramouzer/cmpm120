@@ -18,6 +18,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //reset timedilation
+        game.global.timeDilation = 1;
+        
         //define keys
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
