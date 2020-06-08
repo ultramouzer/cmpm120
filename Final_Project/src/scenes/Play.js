@@ -119,10 +119,10 @@ class Play extends Phaser.Scene {
             this.scene.start('CutsceneScene');
         }
 
-        //dev-only credits access
+        /*//dev-only credits access
         if(Phaser.Input.Keyboard.JustDown(keySpace)){
             this.scene.start('creditsScene');
-        }
+        }*/
     }
 
     //generates a token at a random location
