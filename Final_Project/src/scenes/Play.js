@@ -8,18 +8,25 @@ class Play extends Phaser.Scene {
         this.load.image('player', './Assets/Art/RaindropPlayer.png');
         this.load.image('token', './Assets/Art/RaindropTokenSmall.png');
         this.load.image('wall', './Assets/Art/Wall.png');
-        this.load.image('sky', './Assets/Art/Rainy_Sky.png');
+        this.load.image('nr_sky', './Assets/Art/Sky.png');
         this.load.image('cloud', './Assets/Art/Cloud.png');
         this.load.image('fog', './Assets/Art/Fog.png');
+        this.load.image('ui','./Assets/Art/UI.png');
 
         //Load sound
         this.load.audio('sfx_absorb', './Assets/Sounds/267221__gkillhour__water-droplet.wav');
         //water drop sound from:
         //https://freesound.org/people/gkillhour/sounds/267221/
-        this.load.audio('sfx_purge', './Assets/Sounds/protoPurge.wav');
+        
+        this.load.audio('bgm_rain', './Assets/Sounds/194204__pulswelle__steady-rain.wav');
+        //rain bgm sound from:
+        //https://freesound.org/people/pulswelle/sounds/194204/
     }
 
     create() {
+        //bgm music
+        this.sound.play('bgm_rain');
+
         //reset timedilation
         game.global.timeDilation = 1;
         
@@ -30,8 +37,8 @@ class Play extends Phaser.Scene {
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        //create temporary stars (will replace later on)
-        this.sky = this.add.tileSprite(0, 0, 800, 720, 'sky').setOrigin(0,0);
+        //create sky
+        this.add.image(0,0, 'nr_sky').setOrigin(0,0);
 
         //create background clouds
         this.cloud1 = new Cloud(this, 200, 400, 'cloud', 5);
@@ -76,20 +83,8 @@ class Play extends Phaser.Scene {
 
         this.physics.world.enable(this.tokens);
 
-        //create temporary rectangles (will replace with a tilemap later on)
-        /*this.leftRect = this.physics.add.image(game.config.width / 8, 0, 'wall').setOrigin(0,0);
-        this.rightRect = this.physics.add.image(game.config.width * 7 / 8, 0, 'wall').setOrigin(0,0);
-        this.leftRect.setImmovable();
-        this.rightRect.setImmovable();*/
-
         //create fog
-        //this.fog = this.physics.add.image(480, 360, 'fog');
-        this.fog = new Fog(this, 480, 360, 'fog', 10);
-        this.physics.world.enable(this.fog);
-        this.fog.setDragX(100);
-        this.fog.setDragY(100);
-        this.fog.setMaxVelocity(50,50);
-        this.fog.setImmovable();
+        this.fog = this.add.tileSprite(0, 0, 800, 720, 'fog').setOrigin(0,0);
 
         //create colliders
         this.physics.add.collider(this.player, this.tokens, this.tokenCollision, null, this);
@@ -106,8 +101,8 @@ class Play extends Phaser.Scene {
         this.cloud3.update();
         this.fog.update();
 
-        //stars movement
-        this.sky.tilePositionY -= 3 * game.global.timeDilation;
+        //fog movement
+        this.fog.tilePositionY -= 3 / game.global.timeDilation;
 
         //if player has destroyed a token then game will spawn one in
         if(game.global.destroyedToken){
@@ -122,7 +117,11 @@ class Play extends Phaser.Scene {
         //check for win condition
         if(this.player.getGrowth() >= 4000){
             this.scene.start('CutsceneScene');
-            //this.scene.start('menuScene');
+        }
+
+        //dev-only credits access
+        if(Phaser.Input.Keyboard.JustDown(keySpace)){
+            this.scene.start('creditsScene');
         }
     }
 
@@ -141,7 +140,7 @@ class Play extends Phaser.Scene {
     tokenCollision(player, object){
         console.log("Collided with a token!");
         this.sound.play('sfx_absorb');
-        this.sound.setVolume(0.05);
+        this.sound.setVolume(1);
         this.sound.rate = 1 - ((1 - game.global.timeDilation) / 2);
         object.destroy();
         object.reset();
@@ -151,7 +150,6 @@ class Play extends Phaser.Scene {
     }
 
     //time dilation management 
-    //guide: (1 is normal speed, 0 is full freeze, 2 is 2x speed)
     timeDilation(){
         if(game.global.timeDilation < 10){//set maximum speed here
             console.log("Beginning time dilation!");
@@ -161,5 +159,4 @@ class Play extends Phaser.Scene {
             console.log("Max time dilation reached!");
         }
     }
-    //random text
 }
