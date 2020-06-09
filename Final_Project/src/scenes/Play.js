@@ -25,7 +25,8 @@ class Play extends Phaser.Scene {
 
     create() {
         //bgm music
-        this.sound.play('bgm_rain');
+        this.rain = this.sound.add('bgm_rain', {volume: 0.75});
+        this.rain.play();
 
         //reset timedilation
         game.global.timeDilation = 1;
